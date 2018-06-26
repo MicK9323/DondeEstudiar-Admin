@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org">
+<head th:replace="admin/layout/layout :: head"></head>
+<style>
+    #tbCarrerasSede thead tr {
+        background: #2f3d4a;
+        border-color: #2f3d4a;
+        color: #ffffff;
+    }
+</style>
+<body class="fix-header card-no-border fix-sidebar">
+
+<div th:replace="admin/layout/layout :: preloader"></div>
+
+<div id="main-wrapper">
+
+    <header th:replace="admin/layout/layout :: header"></header>
+
+    <aside th:replace="admin/layout/layout :: sidebar"></aside>
+
+    <div class="page-wrapper">
+        <div class="container-fluid">
+            <div th:replace="admin/layout/layout :: mensajes"></div>
+            <div class="row m-b-5">
+                <div class="col-md-6">
+                    <button role="button" class="btn btn-outline-info">
+                        <i class="mdi mdi-school"></i> Agregar Carrera
+                    </button>
+                </div>
+                <div class="col-md-6 text-right">
+                    <form th:action="@{'/instituciones/ver/'+${sede.institucion.ruc}}">
+                        <button role="button"
+                                class="btn btn-outline-dark">
+                            <i class="fa fa-home"></i> Regresar
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card card-outline-inverse">
+                        <div class="card-header">
+                            <h4 class="m-b-0 text-white" th:text="${'Carreras - '+sede.nomSede}">Lista de Carreras</h4></div>
+                        <div class="card-body">
+                            <div class="alert alert-info alert-dismissible fade show"
+                                 role="alert" th:if="${vacio != null}">
+                                <strong th:text="${vacio}"></strong>
+                                <button type="button" class="close" data-dismiss="alert"
+                                        aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <h4>Carreras dictadas en la institución</h4>
+                            <hr/>
+                            <table id="tbCarrerasSede" th:if="${lista != null}"
+                                   class="table full-color-table full-inverse-table hover-table">
+                                <thead>
+                                <tr>
+                                    <th class="text-center">Carrera</th>
+                                    <th class="text-center">Acreditado</th>
+                                    <th class="text-center">Costo Anual</th>
+                                    <th class="text-center">Ingresantes (%)</th>
+                                    <th class="text-center"></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="item: ${lista}">
+                                    <td th:text="${item.carrera.nombre}">Nombre de Carrera</td>
+                                    <td class="text-center"
+                                        th:text="${item.acreditado == true ? 'SI' : 'NO'}">Acreditado
+                                    </td>
+                                    <td class="text-center" th:text="${'S/. '+item.costoAnual}">CostoAnual</td>
+                                    <td class="text-center" th:text="${item.ingresantes+'%'}">Ingresantes</td>
+                                    <td>
+                                        <a class="btn btn-outline-success btnEditar" data-toggle="tooltip"
+                                           data-placement="top" data-original-title="Editar">
+                                            <i class="mdi mdi-table-edit"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div th:replace="admin/layout/layout :: scripts"></div>
+<script>
+    $(document).ready(function () {
+        $('#tbCarrerasSede').DataTable({
+            "lengthMenu": [5,10,15,20],
+            "language": {"url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"}
+        });
+    });
+</script>
+</body>
+
+</html>

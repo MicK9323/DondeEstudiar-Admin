@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org">
+<head th:replace="admin/layout/layout :: head"></head>
+<body class="fix-header card-no-border fix-sidebar" id="ng-app" ng-app="UsuarioApp" ng-controller="UsuarioController" ng-init="init()">
+
+<div th:replace="admin/layout/layout :: preloader"></div>
+
+<div id="main-wrapper">
+
+    <header th:replace="admin/layout/layout :: header"></header>
+
+    <aside th:replace="admin/layout/layout :: sidebar"></aside>
+
+    <div class="page-wrapper">
+        <div class="container-fluid">
+            <div class="card card-outline-inverse">
+                <div class="card-header">
+                    <h4 class="m-b-0 text-white" th:text="${titulo}"></h4></div>
+                <div class="card-body">
+                    <form th:action="@{/usuarios/editar}" enctype="multipart/form-data"
+                          th:object="${user}" method="post">
+                        <div class="row">
+                            <div class="col-md-8">
+                                <div class="row p-t-20">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="control-label font-bold">DNI</label>
+                                            <input type="text" id="dni" class="form-control"
+                                                   placeholder="DNI" th:field="*{dni_user}"
+                                                   data-ng-model="txtDni.text"
+												   data-ng-show="txtDni.visible" required
+												   maxlength={{txtDni.length}} numbers-only
+                                                   th:errorclass="border-danger">
+                                            <small th:if="${#fields.hasErrors('dni_user')}"
+                                                   th:errors="*{dni_user}" class="text-danger"></small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="control-label font-bold">Nombres</label>
+                                            <input type="text" id="nombre" class="form-control"
+                                                   placeholder="Nombres" th:field="*{nom_user}"
+                                                   data-ng-model="txtNombre.text" normal-text-name
+												   data-ng-show="txtNombre.visible" required
+												   maxlength={{txtNombre.length}} 
+                                                   th:errorclass="border-danger">
+                                            <small th:if="${#fields.hasErrors('nom_user')}"
+                                                   th:errors="*{nom_user}" class="text-danger"></small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="control-label font-bold">Apellidos</label>
+                                            <input type="text" id="apellido" class="form-control"
+                                                   placeholder="Nombres" th:field="*{ape_user}"
+                                                   data-ng-model="txtApellido.text" normal-text-name
+												   data-ng-show="txtApellido.visible" required
+												   maxlength={{txtApellido.length}} 
+                                                   th:errorclass="border-danger">
+                                            <small th:if="${#fields.hasErrors('ape_user')}"
+                                                   th:errors="*{ape_user}" class="text-danger"></small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="control-label font-bold">ID Usuario</label>
+                                            <input type="text" id="usuario" class="form-control"
+                                                   placeholder="ID Usuario" th:field="*{usuario}"
+                                                   data-ng-model="txtIdUsuario.text" normal-text-user
+												   data-ng-show="txtIdUsuario.visible" required
+												   maxlength={{txtIdUsuario.length}} 
+                                                   th:errorclass="border-danger">
+                                            <small th:if="${#fields.hasErrors('usuario')}"
+                                                   th:errors="*{usuario}" class="text-danger"></small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="control-label font-bold">Clave</label>
+                                            <input type="text" id="clave" class="form-control key"
+                                                   th:field="*{clave}" required 
+                                                   data-ng-model="txtClave1.text"
+												   data-ng-show="txtClave1.visible"
+												   maxlength={{txtClave1.length}} 
+                                                   th:errorclass="border-danger">
+                                            <small th:if="${#fields.hasErrors('clave')}"
+                                                   th:errors="*{clave}" class="text-danger"></small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="row p-t-20">
+                                    <div class="col-md-12">
+                                        <h4 class="font-bold">Cambiar foto</h4>
+                                        <input type="file" th:data-default-file="${user.rutaFoto}" name="file" id="input-file-now" class="dropify">
+                                    </div>
+                                </div>
+                                <div class="row p-t-20">
+                                    <div class="col-md-12">
+                                        <button role="button" class="btn btn-block btn-outline-success">
+                                            <i class="mdi mdi-account-convert"></i> Guardar Cambios
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="row p-t-20">
+                                    <div class="col-md-12">
+                                        <a th:href="@{/usuarios/lista}" class="btn btn-block btn-outline-info">
+                                            <i class="fa fa-home"></i> Volver al listado
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div th:replace="admin/layout/layout :: scripts"></div>
+<script th:src="@{/tema/assets/plugins/dropify/dist/js/dropify.min.js}"></script>
+<script th:src="@{/angular/app/usuario-app.js}"></script>
+<script th:src="@{/angular/app/controllers/usuario-controller.js}"></script>
+<script>
+    // Basic
+    $(".dropify").dropify();
+
+    // Translated
+    $(".dropify-fr").dropify({
+        messages: {
+            default: "Pulse para seleccionar una imagen",
+            replace: "Pulse para reemplazar la imagen",
+            remove: "Elimnar",
+            error: "Error al leer el fichero"
+        }
+    });
+
+    // Used events
+    var drEvent = $("#input-file-events").dropify();
+
+    drEvent.on("dropify.beforeClear", function (event, element) {
+        return confirm(
+            'Do you really want to delete "' + element.file.name + '" ?'
+        );
+    });
+
+    drEvent.on("dropify.afterClear", function (event, element) {
+        alert("File deleted");
+    });
+
+    drEvent.on("dropify.errors", function (event, element) {
+        console.log("Has Errors");
+    });
+
+    var drDestroy = $("#input-file-to-destroy").dropify();
+    drDestroy = drDestroy.data("dropify");
+    $("#toggleDropify").on("click", function (e) {
+        e.preventDefault();
+        if (drDestroy.isDropified()) {
+            drDestroy.destroy();
+        } else {
+            drDestroy.init();
+        }
+    });
+</script>
+</body>
+
+</html>
