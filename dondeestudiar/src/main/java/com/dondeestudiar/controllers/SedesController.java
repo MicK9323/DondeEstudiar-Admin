@@ -55,6 +55,8 @@ public class SedesController {
         }
         Institucion institucion = institucionesService.findByRuc(ruc);
         Sede sede = new Sede();
+        sede.setInstitucion(institucion);
+        model.put("sede",sede);
         model.put("institucion", institucion);
         model.put("titulo", "Registrar Sede");
         return "admin/regSede";
@@ -116,7 +118,6 @@ public class SedesController {
         }
 
         int id = sede.getId();
-
         if (sede.getId() >= 1) {
             sedeService.saveSede(sede);
             status.setComplete();

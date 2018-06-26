@@ -33,6 +33,24 @@ public class CarreraSede implements Serializable {
     @JsonIgnore
     private Sede sede;
 
+    @Column(name = "identificador", updatable = false)
+    private String identificador;
+
+    @PrePersist
+    private void PrePersist(){
+        String idCarrera = ""+this.id.getIdCarrera();
+        String idSede = ""+this.id.getIdSede();
+        this.identificador = idCarrera+idSede;
+    }
+
+    public String getIdentificador() {
+        return identificador;
+    }
+
+    public void setIdentificador(String identificador) {
+        this.identificador = identificador;
+    }
+
     public CarreraSedePK getId() {
         return id;
     }

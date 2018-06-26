@@ -79,7 +79,7 @@ public class InstitucionesController {
     // Ver detalle de institucion
     @GetMapping(value = "/ver/{ruc}")
     public String verInstitucion(@PathVariable String ruc, Map<String, Object> model, HttpServletRequest request,
-                                 RedirectAttributes flash) {
+                                 RedirectAttributes flash, HttpSession session) {
         if (validarSesion(request) == false) {
             flash.addFlashAttribute("error", Constantes.SESSION_EXPIRED);
             return "redirect:/admin/login";
