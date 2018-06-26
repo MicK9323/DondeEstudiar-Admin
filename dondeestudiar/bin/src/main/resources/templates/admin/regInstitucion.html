@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/admin/layout/layout :: head"></head>
+<body class="fix-header card-no-border fix-sidebar">
+
+	<div th:replace="admin/layout/layout :: preloader"></div>
+
+	<div id="main-wrapper">
+
+		<header th:replace="/admin/layout/layout :: header"></header>
+
+		<aside th:replace="/admin/layout/layout :: sidebar"></aside>
+
+		<div class="page-wrapper">
+			<div class="container-fluid">
+				<div th:replace="/admin/layout/layout :: mensajes"></div>
+				<div class="row">
+					<div class="col-lg-12">
+						<div class="card">
+							<div class="card-header bg-info">
+								<h4 class="m-b-0 text-white">Registrar Institución</h4>
+							</div>
+							<div class="card-body">
+								<form th:action="@{/instituciones/nuevo}"
+									th:object="${institucion}" method="post"
+									enctype="multipart/form-data">
+									<div class="form-body">
+										<h3 class="card-title">Datos de la Institución</h3>
+										<hr />
+										<div class="row">
+											<div class="col-md-12 col-lg-7">
+												<div class="row">
+													<div class="col-md-8">
+														<div class="form-group">
+															<input placeholder="RUC" maxlength="11" autocomplete="off"
+																autofocus th:field="*{ruc}" type="text"
+																class="form-control" th:errorclass="border-danger">
+															<small th:if="${#fields.hasErrors('ruc')}" 
+																th:errors="*{ruc}"
+																class="text-danger"></small>
+														</div>
+													</div>
+													<div class="col-md-4">
+														<div class="form-group">
+															<button class="btn btn-outline-primary btn-block">
+																<i class="fa fa-search"></i> Consultar
+															</button>
+														</div>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-md-12">
+														<div class="form-group">
+															<label>Nombre de Institución</label> 
+															<input th:field="*{nombre}" type="text" autocomplete="off"
+																class="form-control" th:errorclass="border-danger">
+															<small th:if="${#fields.hasErrors('nombre')}" 
+																th:errors="*{nombre}"
+																class="text-danger"></small>
+														</div>
+													</div>
+												</div>
+												<div class="row">
+													<div class="col-sm-12 col-md-6">
+														<div class="form-group">
+															<label for="web">Sitio Web</label> 
+															<input th:field="*{website}" type="text" autocomplete="off"
+																class="form-control" id="web" th:errorclass="border-danger">
+															<small th:if="${#fields.hasErrors('website')}" 
+																th:errors="*{website}"
+																class="text-danger"></small>
+														</div>
+													</div>
+													<div class="col-sm-12 col-md-6">
+														<div class="form-group">
+															<label for="telf">Central Telefónica</label> 
+																<input th:field="*{telf}" type="tel" autocomplete="off"
+																	class="form-control" id="telf" th:errorclass="border-danger">
+																<small th:if="${#fields.hasErrors('telf')}" 
+																th:errors="*{telf}"
+																class="text-danger"></small>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="col-md-12 col-lg-5">
+												<div class="row">
+													<div class="col-md-12">
+														<input type="file" required name="file" id="input-file-now"
+															class="dropify">
+													</div>
+												</div>
+											</div>
+										</div>
+										<br />
+										<div class="row">
+											<div class="col-sm-12 col-md-4 col-lg-4">
+												<div class="form-group">
+													<label>Tipo de Institución</label> 
+													<select required
+														th:field="*{tipoInstitucion.idParam}"
+														class="form-control custom-select">
+														<option th:value="${null}">Selecciona</option>
+														<option th:each="item:${tipoInstitucion}"
+															th:value="${item.idParam}" th:text="${item.desc}"></option>
+													</select>
+												</div>
+											</div>
+											<div class="col-sm-12 col-md-4 col-lg-4">
+												<div class="form-group">
+													<label>Tipo de Gestión</label> 
+													<select required
+														th:field="*{tipoGestion.idParam}"
+														class="form-control custom-select">
+														<option th:value="${null}">Selecciona</option>
+														<option th:each="item:${tipoGestion}"
+															th:value="${item.idParam}" th:text="${item.desc}"></option>
+													</select>
+												</div>
+											</div>
+											<div class="col-sm-12 col-md-4 col-lg-4">
+												<div class="form-group">
+													<label>Cuenta con Internado</label> 
+													<select
+														th:field="*{residencial}"
+														class="form-control custom-select">
+														<option value="0">No</option>
+														<option value="1">Si</option>
+													</select>
+												</div>
+											</div>
+										</div>
+										<h3 class="box-title">Sedes</h3>
+										<hr />
+										<div class="row">
+											<div class="col-md-12">
+												<!-- ventana modal -->
+												<div class="modal fade bs-example-modal-lg" id="modalSede"
+													tabindex="-1" role="dialog"
+													aria-labelledby="myLargeModalLabel" style="display: none;"
+													aria-hidden="true">
+													<div class="modal-dialog modal-lg">
+														<div class="modal-content">
+															<div class="modal-header">
+																<h4 class="modal-title text-info" id="myLargeModalLabel">
+																	<strong>Datos de Sede</strong>
+																</h4>
+																<button type="button" class="close" data-dismiss="modal"
+																	aria-hidden="true">x</button>
+															</div>
+															<div class="modal-body">
+																<div class="row">
+																	<div class="col-sm-12 col-md-12 col-lg-6">
+																		<div class="form-group">
+																			<label class="text-info"><strong>Nombre
+																					de Sede</strong></label> 
+																					<input id="nomSede" type="text"
+																				class="form-control" autocomplete="off">
+																		</div>
+																		<div class="form-group">
+																			<label class="text-info"><strong>Ubicación</strong></label>
+																			<input id="ubiSede" placeholder="Ubicacion"
+																				type="text" class="form-control" autocomplete="off">
+																		</div>
+																		<div class="form-group">
+																			<div id="listaUbigueos">
+																				<table class="table table-hover">
+																					<tr class="ubicacion" th:each="item: ${ubigueos}">
+																						<td class="desc"
+																							th:text="${item.getDescripcion()}"></td>
+																						<td><input type="hidden" class="codUbigueo"
+																							th:value="${item.codUbigueo}" /></td>
+																					</tr>
+																				</table>
+																			</div>
+																		</div>
+																	</div>
+																	<div id="ubigueo" class="col-sm-12 col-md-12 col-lg-6">
+																		<div class="form-group">
+																			<label class="text-info"><strong>Dirección
+																					de Sede</strong></label> <input id="dirSede" type="text"
+																				class="form-control" autocomplete="off">
+																		</div>
+																		<div class="form-group">
+																			<label class="text-info"><strong>Teléfono
+																					de Sede</strong></label> 
+																					<input id="telfSede" type="tel"
+																				class="form-control" autocomplete="off">
+																		</div>
+																	</div>
+																</div>
+																<div class="row">
+																	<div class="col-md-4">
+																		<div id="btnLocalizar" class="btn btn-outline-success">
+																			<i class="fa fa-map-marker"></i> Localizar
+																		</div>
+																	</div>
+																</div>
+																<br />
+																<div class="row">
+																	<div class="col-md-12">
+																		<h4 class="text-info">Ubicación Geografica</h4>
+																		<div id="map" class="gmaps" style="height: 200px;"></div>
+																		<input type="hidden" id="coordenadas" />
+																	</div>
+																</div>
+															</div>
+															<div class="modal-footer">
+																<div id="agregarSede"
+																	class="btn btn-outline-success waves-effect">Agregar</div>
+																<div
+																	class="btn btn-outline-danger waves-effect text-left"
+																	data-dismiss="modal">Close</div>
+															</div>
+														</div>
+														<!-- /.modal-content -->
+													</div>
+													<!-- /.modal-dialog -->
+												</div>
+												<div class="row">
+													<div class="col-md-4">
+														<div class="btn btn-outline-dark" data-toggle="modal"
+															data-target="#modalSede">Agregar Sede</div>
+													</div>
+												</div>
+												<br>
+												<div class="row">
+													<div class="col-md-12" id="detSedes">
+														<table class="table color-bordered-table inverse-bordered-table vm no-th-brd pro-of-month">
+															<thead>
+																<tr>
+																	<th>Sede</th>
+																	<th>Dirección</th>
+																	<th>Teléfono</th>
+																</tr>
+															</thead>
+															<tbody>
+																<tr th:each="item: ${listaSedes}">
+																	<td class="col-md-6" th:text="${item.nomSede}"></td>
+																	<td class="col-md-6" th:text="${item.direccion}"></td>
+																	<td class="col-md-6" th:text="${item.telf}"></td>
+																</tr>
+															</tbody>
+														</table>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-md-12">
+												<div class="card">
+													<div class="card-body">
+														<div class="row">
+															<div class="col-md-12 col-lg-6">
+																<button type="submit" class="btn btn-block btn-outline-success">
+																	<i class="fa fa-save"></i> Guardar
+																</button>
+															</div>
+															<div class="hidden-lg-up">
+																<br /> <br />
+															</div>
+															<a class="col-md-12 col-lg-6" th:href="@{/instituciones/listar}">
+																<button type="button" class="btn btn-block btn-outline-dark">
+																	<i class="fa fa-home"></i> Cancelar
+																</button>
+															</a>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+	<div th:replace="/admin/layout/layout :: scripts"></div>
+	<!-- ============================================================== -->
+	<!-- Plugins for this page -->
+	<!-- ============================================================== -->
+	<script th:src="@{/tema/assets/plugins/dropify/dist/js/dropify.min.js}"></script>
+	<script th:src="@{/tema/js/institucion.js}"></script>
+	<!-- google maps api -->
+	<!-- <script th:src="@{/tema/assets/plugins/gmaps/gmaps.min.js}"></script>
+	<script th:src="@{/tema/assets/plugins/gmaps/jquery.gmaps.js}"></script> -->
+	<script type="text/javascript">
+
+        function initMap() {
+			var map = new google.maps.Map(document.getElementById('map'), {
+				zoom : 12,
+				center : {
+					lat : -12.104061,
+					lng : -76.96290199999999
+				}
+			});
+			var geocoder = new google.maps.Geocoder();
+
+			document.getElementById('btnLocalizar').addEventListener('click',
+					function() {
+						geocodeAddress(geocoder, map);
+					});
+		}
+
+		
+
+		function geocodeAddress(geocoder, resultsMap) {
+			var region = $('#ubiSede').val().trim();
+			var direccion = $('#dirSede').val().trim();
+			var buscado = direccion + ", " + region;
+			console.log("Direccion buscada: "+buscado);
+			if (region == "" || direccion == "") {
+				alertify
+						.alert("Ingrese la ubicacion y la direccion de la sede");
+			} else {
+				var address = buscado;
+				geocoder
+						.geocode(
+								{
+									'address' : address
+								},
+								function(results, status) {
+									if (status === 'OK') {
+										resultsMap
+												.setCenter(results[0].geometry.location);
+										var marker = new google.maps.Marker(
+												{
+													map : resultsMap,
+													position : results[0].geometry.location
+												});
+										document.getElementById("coordenadas").value = marker.getPosition().toString();
+										console.log($('#coordenadas').val());
+									} else {
+										alertify
+										  .alert('No se pudo encontrar la ubicacion ingresada '+ status);
+									}
+								});
+			}
+		}
+	</script>
+	<script async defer
+		src="https://maps.google.com/maps/api/js?key=AIzaSyAgE-Gb6TvJTxMt1MMAKPFGJyEIVxgp4aA&callback=initMap"></script>
+</body>
+
+</html>

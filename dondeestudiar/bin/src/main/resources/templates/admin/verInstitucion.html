@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html 
+xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/admin/layout/layout :: head" ></head>
+<body class="fix-header card-no-border fix-sidebar">
+	
+    <div th:replace="admin/layout/layout :: preloader"></div>
+    
+    <div id="main-wrapper">
+    
+    	<header th:replace="/admin/layout/layout :: header"></header>
+    	
+    	<aside th:replace="/admin/layout/layout :: sidebar"></aside>
+    	
+    	<div class="page-wrapper">
+			<div class="container-fluid">
+                <div th:replace="/admin/layout/layout :: mensajes"></div>
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="card card-outline-primary">
+                            <div class="card-header">
+                                <h4 class="m-b-0 text-white">Perfil de Institución</h4>
+                            </div>
+                            <div class="card-body text-center">
+                                <div class="m-t-30">
+                                    <img th:src="@{${institucion.rutaLogo}}" class="img-thumbnail" width="220">
+                                    <h4 class="card-title m-t-10" th:text="${institucion.nombre}">Nombre de la institucion</h4>
+                                    <div class="row text-center justify-content-md-center">
+                                        <div class="col-6">
+                                            <a href="javascript:void(0)" class="btn btn-block btn-outline-dark">
+                                                <font class="font-medium"><i class="mdi mdi-school"></i> Carreras</font>
+                                            </a>
+                                        </div>
+                                        <div class="col-6">
+                                            <span href="javascript:void(0)" class="link">
+                                                <i class="mdi mdi-map-marker-radius"></i>
+                                                <font class="font-medium text-dark" th:text="'Sedes: '+${institucion.countSedes()}">Num Sedes</font>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <hr>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <small class="text-muted">RUC</small>
+                                        <h6 th:text="${institucion.ruc}">Numero de ruc</h6>
+                                        <small class="text-muted p-t-30 db">Tipo de Institución</small>
+                                        <h6 th:text="${institucion.tipoInstitucion.desc}">Instituto</h6>
+                                        <small class="text-muted p-t-30 db">Tipo de gestión</small>
+                                        <h6 th:text="${institucion.tipoGestion.desc}">Privada</h6>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <small class="text-muted p-t-30 db">Central Telefónica</small>
+                                        <h6 th:text="${institucion.telf}">12654859</h6>
+                                        <small class="text-muted p-t-30 db">Sitio Web</small>
+                                        <h6 th:text="${institucion.website}">www.fake.com</h6>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-md-12 col-lg-6">
+                                                        <a th:href="@{'/instituciones/editar/'+${institucion.ruc}}"
+                                                           class="btn btn-outline-primary btn-block">
+                                                            <i class="fa fa-edit"></i> Editar
+                                                        </a>
+                                                    </div>
+                                                    <div class="hidden-lg-up">
+                                                        <br /> <br />
+                                                    </div>
+                                                    <div class="col-md-12 col-lg-6">
+                                                        <a th:href="@{/instituciones/listar}" class="btn btn-block btn-outline-dark">
+                                                            <i class="fa fa-home"></i> Regresar
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-7">
+                        <div class="card card-outline-inverse">
+                            <div class="card-header">
+                                <h4 class="m-b-0 text-white">Sedes Registradas</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-6 col-lg-7">
+                                        <div class="form-group row">
+                                            <div class="col-md-7">
+                                                <input type="text" id="demo-input-search2" placeholder="Buscar Sede" class="form-control">
+                                            </div>
+                                            <div class="col-md-5">
+                                                <a href="" class="btn btn-outline-inverse">Buscar</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="table-responsive m-t-20 color-bordered-table inverse-bordered-table">
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-left">Sede</th>
+                                                    <th class="text-left">Departamento</th>
+                                                    <th class="text-center">Opciones</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr th:each="sede: ${institucion.sedes}" th:class="${sede.estado == false ? 'table-active' : ''}">
+                                                    <td class="text-left" th:text="${sede.nomSede}">Nom Sede</td>
+                                                    <td class="text-left" th:text="${sede.ubicacion.descDep}">Lima</td>
+                                                    <td class="text-center">
+                                                        <a class="btn btn-outline-warning" th:href="@{'/sedes/ver/'+${sede.id}}"
+                                                           data-toggle="tooltip" data-placement="top" data-original-title="Editar Sede">
+                                                            <i class="fa fa-edit"></i>
+                                                        </a>
+                                                        <a class="btn btn-outline-danger" data-toggle="tooltip" data-placement="top" data-original-title="Deshabilitar Sede"
+                                                           th:if="${sede.estado}==true" th:href="@{'/sedes/disabled/'+${sede.id}+'/'+${institucion.ruc}}">
+                                                            <i class="fa fa-minus-circle"></i>
+                                                        </a>
+                                                        <a class="btn btn-outline-success" data-toggle="tooltip" data-placement="top" data-original-title="Habilitar Sede"
+                                                            th:if="${sede.estado}==false" th:href="@{'/sedes/enabled/'+${sede.id}+'/'+${institucion.ruc}}">
+                                                            <i class="fa fa-check"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+		</div>
+    
+    </div>
+    
+    <div th:replace="/admin/layout/layout :: scripts"></div>
+    
+</body>
+
+</html>

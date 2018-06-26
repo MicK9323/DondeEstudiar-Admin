@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org">
+<head th:replace="admin/layout/layout :: head"></head>
+<style>
+    #tbGeneral thead tr {
+        background: #2f3d4a;
+        border-color: #2f3d4a;
+        color: #ffffff;
+    }
+
+    #tbCarrerasSede thead tr {
+        background: #2f3d4a;
+        border-color: #2f3d4a;
+        color: #ffffff;
+    }
+</style>
+<body class="fix-header card-no-border fix-sidebar" id="ng-app" ng-app="CarreraApp" ng-controller="CarreraController" ng-init="init()">
+
+<div th:replace="admin/layout/layout :: preloader"></div>
+
+<div id="main-wrapper">
+
+    <header th:replace="admin/layout/layout :: header"></header>
+
+    <aside th:replace="admin/layout/layout :: sidebar"></aside>
+
+    <div class="page-wrapper">
+        <div class="container-fluid">
+            <div th:replace="admin/layout/layout :: mensajes"></div>
+            <div class="row m-b-5">
+                <div class="col-md-6">
+                    <form th:action="@{/carreras/institucion/asignar}">
+                        <button role="button" class="btn btn-outline-info">
+                            <i class="mdi mdi-school"></i> Agregar Carrera
+                        </button>
+                    </form>
+                </div>
+                <div class="col-md-6 text-right">
+                    <form th:action="@{'/instituciones/ver/'+${institucion.ruc}}">
+                        <button role="button"
+                                class="btn btn-outline-dark">
+                            <i class="fa fa-home"></i> Regresar
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card card-outline-inverse">
+                        <div class="card-header">
+                            <h4 class="m-b-0 text-white" th:text="${institucion.nombre}">Detalle de Carreras</h4></div>
+                        <div class="card-body">
+                            <div th:if="${!carreras.isEmpty()}">
+                                <h4>Carreras dictadas en la institución</h4>
+                                <hr/>
+                                <table id="tbGeneral" class="table full-color-table full-inverse-table hover-table">
+                                    <thead>
+                                    <tr>
+                                        <th class="text-center">Carrera</th>
+                                        <th class="text-center">Area</th>
+                                        <th class="text-center">Tipo</th>
+                                        <th class="text-center">Semestres</th>
+                                        <th class="text-center"></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr th:each="carrera: ${carreras}">
+                                        <td th:text="${carrera.nombre}">Nombre de Carrera</td>
+                                        <td th:text="${carrera.area.nombre}">Area de la carrera</td>
+                                        <td th:text="${carrera.tipoCarrera.desc}">Tipo de Carrera</td>
+                                        <td class="text-center" th:text="${carrera.getDuracion()}">Duracion en
+                                            semestres
+                                        </td>
+                                        <td>
+                                            <a class="btn btn-outline-danger" data-toggle="tooltip"
+                                               data-placement="top" data-original-title="Quitar Carrera de esta Institución">
+                                                <i class="fa fa-trash-o"></i>
+                                            </a>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div th:replace="admin/layout/layout :: scripts"></div>
+<script th:src="@{/angular/app/carrera-app.js}"></script>
+<script th:src="@{/angular/app/controllers/carrera-controller.js}"></script>
+<script>
+    $(document).ready(function () {
+        $('#tbGeneral').DataTable({
+            "lengthMenu": [5, 10, 15, 20],
+            "language": {"url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"}
+        });
+
+        var data = "";
+        $('#listaSedes').change(function () {
+            data = $(this).val();
+            if (data !== "") {
+                $('#btnConsultar').removeAttr('disabled');
+            } else {
+                $('#btnConsultar').attr('disabled', 'disabled');
+            }
+            console.log('Data: ' + data);
+        })
+
+        $('#btnConsultar').click(function () {
+            console.log('Consultar')
+            $('#refreshTable').load('/carreras/refresh/' + data, function () {
+                $('#tbCarrerasSede').DataTable({
+                    "lengthMenu": [5, 10, 15, 20],
+                    "language": {"url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"}
+                });
+            });
+        })
+
+        $('#tbCarrerasSede').on('click', '.btnEditar', function () {
+            console.log('Reconoce');
+        })
+
+    });
+</script>
+</body>
+
+</html>

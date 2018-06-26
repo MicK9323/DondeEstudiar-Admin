@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org">
+<head th:replace="admin/layout/layout :: head"></head>
+<body class="fix-header card-no-border fix-sidebar" id="ng-app" ng-app="UsuarioApp" ng-controller="UsuarioController" ng-init="init()">
+
+<div th:replace="admin/layout/layout :: preloader"></div>
+
+<div id="main-wrapper">
+
+    <header th:replace="admin/layout/layout :: header"></header>
+
+    <aside th:replace="admin/layout/layout :: sidebar"></aside>
+
+    <div class="page-wrapper bg-white">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card bg-light card-outline-inverse">
+                        <div class="card-header">
+                            <h4 class="m-b-0 text-white">Perfil de Usuario</h4></div>
+                        <div class="card-body">
+                            <div class="row">
+                                <!-- Columna Izquierda -->
+                                <div class="col-sm-12 col-md-5 col-lg-4">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <div class="m-t-30 text-center">
+                                                <img th:src="@{${user.rutaFoto}}" class="img-circle" width="150">
+                                                <h4 class="card-title m-t-10 font-bold" th:text="${user.getNombres()}">
+                                                    Nombre de Usuario</h4>
+                                                <h6 class="card-subtitle" th:text="${user.rol.role}">Rol de Usuario</h6>
+                                                <div class="row text-center justify-content-md-center">
+                                                    <div class="col-6 text-center">
+                                                        <a href="javascript:void(0)" class="link">
+                                                            <i class="mdi mdi-account-card-details"></i>
+                                                            <span class="font-medium" th:text="${user.dni_user}">DNI</span>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <hr/>
+                                    </div>
+                                </div>
+                                <!-- Columna Derecha -->
+                                <div class="col-sm-12 col-md-7 col-lg-8">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5 class="text-dark font-bold">Información Personal</h5>
+                                            <hr/>
+                                            <form th:action="@{/usuarios/actualizar}" th:object="${user}"
+                                                    enctype="multipart/form-data" method="post">
+                                                <div class="row">
+                                                    <div class="col-md-7">
+                                                        <div class="row p-t-20">
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <label class="control-label font-bold">Nombres</label>
+                                                                    <input type="text" id="nombre" class="form-control"
+                                                                           placeholder="Nombres" th:field="*{nom_user}"
+                                                                           data-ng-model="txtNombre.text" normal-text-user
+																		   data-ng-show="txtNombre.visible" required
+																		   maxlength={{txtNombre.length}} 
+                                                                           th:errorclass="border-danger">
+                                                                    <small th:if="${#fields.hasErrors('nom_user')}"
+                                                                            th:errors="*{nom_user}" class="text-danger"></small>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <label class="control-label font-bold">Apellidos</label>
+                                                                    <input type="text" id="apellido" class="form-control"
+                                                                           placeholder="Nombres" th:field="*{ape_user}"
+                                                                           data-ng-model="txtApellido.text" normal-text-user
+																		   data-ng-show="txtApellido.visible" required
+																		   maxlength={{txtApellido.length}} 
+                                                                           th:errorclass="border-danger">
+                                                                    <small th:if="${#fields.hasErrors('ape_user')}"
+                                                                           th:errors="*{ape_user}" class="text-danger"></small>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <label class="control-label font-bold">ID Usuario</label>
+                                                                    <input type="text" id="usuario" class="form-control"
+                                                                           placeholder="ID Usuario" th:field="*{usuario}"
+                                                                           data-ng-model="txtIdUsuario.text" normal-text-user
+																		   data-ng-show="txtIdUsuario.visible" required
+																		   maxlength={{txtIdUsuario.length}} 
+                                                                           th:errorclass="border-danger">
+                                                                    <small th:if="${#fields.hasErrors('usuario')}"
+                                                                           th:errors="*{usuario}" class="text-danger"></small>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="form-group">
+                                                                    <label class="control-label font-bold">Contraseña</label>
+                                                                    <input type="text" class="form-control key"
+                                                                           th:field="*{clave}" th:errorclass="border-danger "
+                                                                           data-ng-model="txtClave1.text"
+																		   data-ng-show="txtClave1.visible"
+																		   maxlength={{txtClave1.length}}  />
+                                                                    <small th:if="${#fields.hasErrors('clave')}"
+                                                                           th:errors="*{clave}" class="text-danger"></small>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-5">
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <h4 class="font-bold">Cambiar foto</h4>
+                                                                <input type="file" name="file" id="input-file-now" class="dropify">
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-12">
+                                                        <button role="button" class="btn btn-block btn-outline-success">
+                                                            <i class="mdi mdi-account-convert"></i> Guardar Cambios
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div th:replace="admin/layout/layout :: scripts"></div>
+<script th:src="@{/tema/assets/plugins/dropify/dist/js/dropify.min.js}"></script>
+<script th:src="@{/angular/app/usuario-app.js}"></script>
+<script th:src="@{/angular/app/controllers/usuario-controller.js}"></script>
+<script>
+    // Basic
+    $(".dropify").dropify();
+
+    // Translated
+    $(".dropify-fr").dropify({
+        messages: {
+            default: "Pulse para seleccionar una imagen",
+            replace: "Pulse para reemplazar la imagen",
+            remove: "Elimnar",
+            error: "Error al leer el fichero"
+        }
+    });
+
+    // Used events
+    var drEvent = $("#input-file-events").dropify();
+
+    drEvent.on("dropify.beforeClear", function (event, element) {
+        return confirm(
+            'Do you really want to delete "' + element.file.name + '" ?'
+        );
+    });
+
+    drEvent.on("dropify.afterClear", function (event, element) {
+        alert("File deleted");
+    });
+
+    drEvent.on("dropify.errors", function (event, element) {
+        console.log("Has Errors");
+    });
+
+    var drDestroy = $("#input-file-to-destroy").dropify();
+    drDestroy = drDestroy.data("dropify");
+    $("#toggleDropify").on("click", function (e) {
+        e.preventDefault();
+        if (drDestroy.isDropified()) {
+            drDestroy.destroy();
+        } else {
+            drDestroy.init();
+        }
+    });
+</script>
+</body>
+
+</html>

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html 
+xmlns:th="http://www.thymeleaf.org">
+<head th:replace="admin/layout/layout :: head" ></head>
+<body class="fix-header card-no-border fix-sidebar">
+	
+    <div th:replace="admin/layout/layout :: preloader"></div>
+    
+    <div id="main-wrapper">
+    
+    	<header th:replace="admin/layout/layout :: header"></header>
+    	
+    	<aside th:replace="admin/layout/layout :: sidebar"></aside>
+    	
+    	<div class="page-wrapper">
+			<div class="container-fluid">
+				<div th:replace="admin/layout/layout :: mensajes"></div>
+				<div class="jumbotron">
+				  <h1 class="display-4">Bienvenido</h1>
+				  <p class="lead">Sistema de comparaci&oacute;n de instituciones educativas a nivel nacional</p>
+				  <hr class="my-4">
+				  <p></p>
+				  <p class="lead">
+				    <a class="btn btn-primary btn-lg" href="#" role="button">Leer m&aacute;s</a>
+				  </p>
+				</div>
+			</div>
+		</div>
+    
+    </div>
+    
+    <div th:replace="admin/layout/layout :: scripts"></div>
+    
+</body>
+
+</html>

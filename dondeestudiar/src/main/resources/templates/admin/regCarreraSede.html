@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org">
+<head th:replace="admin/layout/layout :: head"></head>
+<style>
+    .fila:hover {
+        cursor: pointer;
+    }
+</style>
+<body class="fix-header card-no-border fix-sidebar" id="ng-app" ng-app="CarreraApp" ng-controller="CarreraController" ng-init="init()">
+<div th:replace="admin/layout/layout :: preloader"></div>
+
+<div id="main-wrapper">
+
+    <header th:replace="admin/layout/layout :: header"></header>
+
+    <aside th:replace="admin/layout/layout :: sidebar"></aside>
+
+    <div class="page-wrapper">
+        <div class="container-fluid">
+            <div th:replace="admin/layout/layout :: mensajes"></div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="card card-outline-inverse">
+                        <div class="card-header">
+                            <h4 class="m-b-0 text-white" th:text="${institucion.nombre}">Asignar Carreras</h4>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-12 col-md-12 col-lg-6">
+                                    <div class="form-group">
+                                        <label class="control-label font-bold">Carrera</label>
+                                        <span id="spinner" class="d-none">  <i class="fa fa-refresh fa-spin"></i></span>
+                                        <input type="text" id="carrera" class="form-control"
+                                               placeholder="Buscar Carrera" autocomplete="off"
+                                               data-ng-model="txtNomCarrera.text"
+											   data-ng-show="txtNomCarrera.visible"
+											   maxlength={{txtNomCarrera.length}} letters-only />
+                                        <div id="listaCarreras">
+                                            <table class="table table-hover">
+                                                <tr class="carrera" th:each="item: ${carreras}">
+                                                    <td class="desc" th:text="${item.nombre}"></td>
+                                                    <td>
+                                                        <input type="hidden" class="idCarrera"
+                                                               th:value="${item.id}"/>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="control-label font-bold">Carrera Seleccionada:</label>
+                                        <input type="text" class="form-control" id="nomCarrera" readonly>
+                                        <input type="hidden" id="idCarrera">
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 col-md-12 col-lg-6">
+                                    <div class="form-group">
+                                        <label class="control-label font-bold">Sedes:</label><br/>
+                                        <button disabled="true" id="btnSedes" class="btn btn-outline-dark" data-toggle="modal"
+                                                data-target="#modalSedes">
+                                            <i class="mdi mdi-map-marker"></i> Seleccionar Sedes
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-12 col-md-12 col-lg-12">
+                                    <h4>Por Asignar:</h4>
+                                    <hr/>
+                                    <table class="table table-sm color-table primary-table table-hover">
+                                        <thead>
+                                        <tr>
+                                            <th class="text-center">Carrera</th>
+                                            <th class="d-none">IdCarrera</th>
+                                            <th class="text-center">Sede</th>
+                                            <th class="d-none">IdSede</th>
+                                            <th class="text-center">Acreditado</th>
+                                            <th class="text-center">Costo Anual</th>
+                                            <th class="text-center">% Ingresante</th>
+                                            <th class="text-center"></th>
+                                            <th class="text-center"></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="tbAsignacion">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="row p-5">
+                                <div class="col-md-12">
+                                    <h4>Asignados:</h4>
+                                    <hr/>
+                                    <table class="table table-sm full-color-table full-info-table hover-table">
+                                        <thead>
+                                        <tr>
+                                            <th class="text-center font-bold">Item</th>
+                                            <th class="d-none index">index</th>
+                                            <th class="text-center font-bold">Carrera</th>
+                                            <th class="text-center font-bold">Sede</th>
+                                            <th class="text-center font-bold">Acreditado</th>
+                                            <th class="text-center font-bold">Costo Anual</th>
+                                            <th class="text-center font-bold">Ingresantes</th>
+                                            <th class="text-center font-bold"></th>
+                                        </tr>
+                                        </thead>
+                                        <tbody id="tbDetalle">
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <hr/>
+                            <div class="row m-t-5">
+                                <div class="col-md-6">
+                                    <button id="btnRegistrar" role="button" class="btn btn-outline-info">
+                                        <i class="mdi mdi-school"></i> Guardar
+                                    </button>
+                                </div>
+                                <div class="col-md-6 text-right">
+                                    <form th:action="@{'/instituciones/ver/'+${institucion.ruc}}">
+                                        <button role="button"
+                                                class="btn btn-outline-dark">
+                                            <i class="fa fa-home"></i> Cancelar
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Modal de Sedes -->
+        <div id="modalSedes" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+             style="display: none;" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title" id="myModalLabel">Seleccionar Sedes</h4>
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    </div>
+                    <div class="modal-body">
+                        <button id="btnAll" class="btn btn-outline-warning m-b-5">Seleccionar todo</button>
+                        <table id="tbSedes" class="table table-sm color-table info-table table-hover">
+                            <thead>
+                            <tr>
+                                <th class="text-center">Item</th>
+                                <th class="d-none"></th>
+                                <th class="text-center">Sede</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr class="fila" th:each="sede:${sedes}">
+                                <td class="seleccionar text-center"><i class="fa fa-square-o"></i></td>
+                                <td class="idSede d-none" th:text="${sede.id}">IdSede</td>
+                                <td class="nomSede text-left" th:text="${sede.nomSede}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="row">
+                            <div class="col-sm-12 col-md-12 col-lg-6">
+                                <div class="form-group">
+                                    <button id="btnAceptar" ng-click="btnAceptar()" type="button" class="btn btn-info waves-effect"
+                                            data-dismiss="modal">Aceptar
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="col-sm-12 col-md-12 col-lg-6">
+                                <div class="form-group">
+                                    <button id="btnCancelar" ng-click="btnCancelar()" type="button" class="btn btn-danger waves-effect"
+                                            data-dismiss="modal">Cancelar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+        </div>
+    </div>
+
+</div>
+
+<div th:replace="admin/layout/layout :: scripts"></div>
+<script th:src="@{/tema/js/carreras.js}"></script>
+<script th:src="@{/angular/app/carrera-app.js}"></script>
+<script th:src="@{/angular/app/controllers/carrera-controller.js}"></script>
+</body>
+
+</html>

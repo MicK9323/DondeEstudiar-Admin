@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+    <head th:fragment="head">
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title th:text="${titulo}"></title>
+        <!-- Bootstrap Core CSS -->
+        <link th:href="@{/tema/assets/plugins/bootstrap/css/bootstrap.min.css}"
+              rel="stylesheet">
+        <link rel="stylesheet" th:href="@{/tema/css/pages/card-page.css}">
+        <link th:href="@{/tema/css/pages/google-vector-map.css}"
+              rel="stylesheet">
+        <link th:href="@{/tema/assets/plugins/alertify/alertify.min.css}"
+              rel="stylesheet">
+        <link th:href="@{/tema/assets/plugins/alertify/alertify-bootstrap.min.css}"
+              rel="stylesheet">
+        <link rel="stylesheet"
+              th:href="@{/tema/assets/plugins/dropify/dist/css/dropify.min.css}">
+        <link rel="stylesheet"
+              th:href="@{/tema/css/pages/stylish-tooltip.css}">
+        <!-- Custom CSS -->
+        <link th:href="@{/tema/css/style.css}" rel="stylesheet">
+        <!-- You can change the theme colors from here -->
+        <link th:href="@{/tema/css/colors/blue-dark.css}" id="theme"
+              rel="stylesheet">
+    </head>
+
+    <body class="fix-header card-no-border fix-sidebar">
+        <!-- ============================================================== -->
+        <!-- Preloader -->
+        <!-- ============================================================== -->
+        <div th:fragment="preloader" class="preloader">
+            <div class="loader">
+                <div class="loader__figure"></div>
+                <p class="loader__label">Donde Estudiar</p>
+            </div>
+        </div>
+        <!-- ============================================================== -->
+        <!-- Main wrapper - style you can find in pages.scss -->
+        <!-- ============================================================== -->
+        <div id="main-wrapper">
+            <!-- ============================================================== -->
+            <!-- TopBar -->
+            <!-- ============================================================== -->
+            <header th:fragment="header" class="topbar">
+                <nav class="navbar top-navbar navbar-expand-md navbar-light">
+                    <!-- ============================================================== -->
+                    <!-- Logo -->
+                    <!-- ============================================================== -->
+                    <div class="navbar-header">
+                        <a class="navbar-brand" href="#"> <!-- Logo icon -->
+                            <b> <!--You can put here icon as well // <i class="wi wi-sunset"></i> //-->
+                                <!-- Dark Logo icon -->
+                                <img
+                                        th:src="@{/tema/assets/images/logo-icon.png}" alt="homepage"
+                                        class="dark-logo"/> <!-- Light Logo icon -->
+                                <img
+                                        th:src="@{/tema/assets/images/logo-light-icon.png}"
+                                        alt="homepage" class="light-logo"/>
+                            </b> <!--End Logo icon --> <!-- Logo text -->
+                            <span> <!-- dark Logo text -->
+                                <img th:src="@{/tema/assets/images/logo-text.png}" alt="homepage"
+                                     class="dark-logo"/> <!-- Light Logo text -->
+                                <img
+                                        th:src="@{/tema/assets/images/logo-light-text.png}"
+                                        class="light-logo" alt="homepage"/>
+                            </span>
+                        </a>
+                    </div>
+                    <div class="navbar-collapse">
+                        <!-- ============================================================== -->
+                        <!-- Toggle Button -->
+                        <!-- ============================================================== -->
+                        <ul class="navbar-nav mr-auto">
+                            <li class="nav-item">
+                                <a
+                                        class="nav-link nav-toggler hidden-md-up waves-effect waves-dark"
+                                        href="javascript:void(0)">
+                                    <i class="ti-menu"></i>
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a
+                                        class="nav-link sidebartoggler hidden-sm-down waves-effect waves-dark"
+                                        href="javascript:void(0)">
+                                    <i class="ti-menu"></i>
+                                </a>
+                            </li>
+                            <li class="nav-item hidden-sm-down"></li>
+                        </ul>
+                        <!-- ============================================================== -->
+                        <!-- Opciones de Usuario -->
+                        <!-- ============================================================== -->
+                        <ul class="navbar-nav my-lg-0">
+                            <li class="nav-item dropdown">
+                                <a
+                                        class="nav-link dropdown-toggle waves-effect waves-dark" href=""
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <img th:src="@{/tema/assets/images/users/1.jpg}" alt="user"
+                                         class="profile-pic"/>
+                                </a>
+                                <div class="dropdown-menu dropdown-menu-right animated flipInY">
+                                    <ul class="dropdown-user">
+                                        <li>
+                                            <div class="dw-user-box">
+                                                <div class="u-img">
+                                                    <img th:src="@{/tema/assets/images/users/1.jpg}" alt="user">
+                                                </div>
+                                                <div class="u-text">
+                                                    <h4 th:text="${session.usuario.getNombres()}">Usuario</h4>
+                                                    <p class="text-muted" th:text="${session.usuario.rol.role}">Rol
+                                                        de Usuario
+                                                    </p>
+                                                    <a href="pages-profile.html"
+                                                       class="btn btn-rounded btn-danger btn-sm">
+                                                        <i
+                                                                class="ti-settings"></i>
+                                                        Ver Perfil
+                                                    </a>
+                                                </div>
+                                            </div>
+                                        </li>
+                                        <li role="separator" class="divider"></li>
+                                        <li style="padding-left: 1rem; padding-right: 1rem;">
+                                            <a
+                                                    class="btn btn-outline-dark btn-block"
+                                                    th:href="@{/admin/logout}" type="submit">
+                                                <i
+                                                        class="fa fa-power-off"></i>
+                                                Cerrar Sesión
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+            </header>
+            <!-- ============================================================== -->
+            <!-- End Topbar header -->
+            <!-- ============================================================== -->
+            <!-- ============================================================== -->
+            <!-- Left Sidebar - style you can find in sidebar.scss  -->
+            <!-- ============================================================== -->
+            <aside th:fragment="sidebar" class="left-sidebar">
+                <!-- Sidebar scroll-->
+                <div class="scroll-sidebar">
+                    <!-- Sidebar navigation-->
+                    <nav class="sidebar-nav">
+                        <ul id="sidebarnav">
+                            <li class="user-profile">
+                                <a>
+                                    <i class="fa fa-user-o"></i>
+                                    <span class="hide-menu" th:text="${session.usuario.nom_user}">Nombre
+                                        de Usuario
+                                    </span>
+                                </a>
+                            </li>
+                            <li class="nav-devider"></li>
+                            <li class="nav-small-cap">Mantenimiento de Datos</li>
+                            <li>
+                                <a class="has-arrow waves-effect waves-dark" href="#"
+                                   aria-expanded="false">
+                                    <i class="fa fa-university"></i>
+                                    <span class="hide-menu">Instituciones</span>
+                                </a>
+                                <ul aria-expanded="false" class="collapse">
+                                    <li>
+                                        <a th:href="@{/instituciones/listar}">Listado</a>
+                                    </li>
+                                    <li>
+                                        <a th:href="@{/instituciones/nuevo}">Nueva
+                                            Institución
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                            <li>
+                                <a class="has-arrow waves-effect waves-dark" href="#"
+                                   aria-expanded="false">
+                                    <i class="mdi mdi-school"></i>
+                                    <span class="hide-menu">Carreras</span>
+                                </a>
+                                <ul aria-expanded="false" class="collapse">
+                                    <li>
+                                        <a th:href="@{/carreras/listar}">Listado</a>
+                                    </li>
+                                    <li>
+                                        <a th:href="@{/carreras/nuevo}">Nueva Carrera</a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </aside>
+            <!-- ============================================================== -->
+
+            <div th:fragment="mensajes">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="alert alert-success alert-dismissible fade show"
+                             role="alert" th:if="${success != null}">
+                            <strong th:text="${success}"></strong>
+                            <button type="button" class="close" data-dismiss="alert"
+                                    aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="alert alert-danger alert-dismissible fade show"
+                             role="alert" th:if="${error != null}">
+                            <strong th:text="${error}"></strong>
+                            <button type="button" class="close" data-dismiss="alert"
+                                    aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="alert alert-warning alert-dismissible fade show"
+                             role="alert" th:if="${warning != null}">
+                            <strong th:text="${warning}"></strong>
+                            <button type="button" class="close" data-dismiss="alert"
+                                    aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="alert alert-info alert-dismissible fade show"
+                             role="alert" th:if="${info != null}">
+                            <strong th:text="${info}"></strong>
+                            <button type="button" class="close" data-dismiss="alert"
+                                    aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- COntenido  -->
+            <!-- ============================================================== -->
+            <div class="page-wrapper">
+                <div class="container-fluid"></div>
+            </div>
+        </div>
+
+        <div th:fragment="scripts">
+            <script th:src="@{/tema/assets/plugins/jquery/jquery.min.js}"></script>
+            <!-- Bootstrap tether Core JavaScript -->
+            <script th:src="@{/tema/assets/plugins/bootstrap/js/popper.min.js}"></script>
+            <script th:src="@{/tema/assets/plugins/bootstrap/js/bootstrap.min.js}"></script>
+            <!-- slimscrollbar scrollbar JavaScript -->
+            <script th:src="@{/tema/js/perfect-scrollbar.jquery.min.js}"></script>
+            <!--Wave Effects -->
+            <script th:src="@{/tema/js/waves.js}"></script>
+            <!--Menu sidebar -->
+            <script th:src="@{/tema/js/sidebarmenu.js}"></script>
+            <!--Custom JavaScript -->
+            <script th:src="@{/tema/js/custom.min.js}"></script>
+            <!-- Sweet Alert -->
+            <script th:src="@{/tema/assets/plugins/alertify/alertify.min.js}"></script>
+        </div>
+
+    </body>
+
+</html>

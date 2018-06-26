@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html 
+xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/admin/layout/layout :: head" ></head>
+<body class="fix-header card-no-border fix-sidebar">
+	
+    <div th:replace="admin/layout/layout :: preloader"></div>
+    
+    <div id="main-wrapper">
+    
+    	<header th:replace="/admin/layout/layout :: header"></header>
+    	
+    	<aside th:replace="/admin/layout/layout :: sidebar"></aside>
+    	
+    	<div class="page-wrapper">
+			<div class="container-fluid">
+			<div th:replace="/admin/layout/layout :: mensajes"></div>
+                <div class="row" th:if="!${mostrar} == true">
+                    <div class="col-md-12">
+                        <div class="card bg-info text-white">
+                            <div class="card-body">
+                                <div class="d-flex">
+                                    <div class="stats">
+                                        <h3 class="text-white">
+                                            <strong>Instituciones Educativas Registradas</strong>
+                                        </h3>
+                                        <!-- <h6 class="text-white">Cantidad</h6> -->
+                                        <a th:href="@{/instituciones/nuevo}" 
+                                        	class="btn btn-rounded btn-outline btn-light m-t-10 font-14">Agregar</a>
+                                    </div>
+                                    <div class="stats-icon text-right ml-auto">
+                                        <i class="fa fa-university display-5 op-3 text-dark"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-6 col-lg-7">
+                                    	<form th:action="@{/instituciones/buscar}" method="post">
+                                    		<div class="form-group row">
+	                                            <div class="col-md-7">
+	                                                <input type="text" name="nombre" required autocomplete="off"
+	                                                	placeholder="Buscar Institucion" class="form-control">
+	                                            </div>
+	                                            <div class="col-md-5">                                            	
+	                                                <button type="submit" class="btn btn-outline-primary">
+	                                                	<i class="fa fa-search"></i> Buscar
+	                                                </button>
+	                                            </div>
+                                        	</div>
+                                    	</form>                                        
+                                    </div>
+                                    <div class="col-sm-12 col-md-6 col-lg-5" th:if="${mostrar} == true">
+                                		<div class="form-group row">
+                                			<div class="col-md-5">
+                                				<a th:href="@{/instituciones/listar}" class="btn btn-outline-info">
+                                					<i class="fa fa-arrow-circle-left"></i> Regresar
+                                				</a>
+                                			</div>
+                                		</div>
+                                	</div>
+                                    <!--<div class="col-sm-12 col-md-6 col-lg-5">-->
+                                        <!--<div class="form-group row">-->
+                                            <!--<div class="col-md-12">-->
+                                                <!--<select class="custom-select col-md-5 b-0">-->
+                                                    <!--<option value="">[Seleccione para filtrar]</option>-->
+                                                    <!--<option value="0">Todo</option>-->
+                                                    <!--<option value="1">Universidades</option>-->
+                                                    <!--<option value="2">Institutos</option>-->
+                                                <!--</select>-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                </div>
+                                <div class="table-responsive m-t-20">
+                                    <table class="table color-bordered-table inverse-bordered-table vm no-th-brd pro-of-month">
+                                        <thead>
+                                            <tr>
+                                                <th class="text-left">Logo</th>
+                                                <th class="text-left">Nombre</th>
+                                                <th class="text-center">Opciones</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:class="${institucion.estado == false? 'table-active' : ''}"  th:each="institucion: ${listado}">
+                                                <td class="text-left">
+                                                    <img th:alt="${institucion.nombre}" width="50" class="img-thumbnail rounded float-left"
+                                                       th:src="@{${institucion.rutaLogo}}">
+                                                </td>
+                                                <td class="text-left" th:text="${institucion.nombre}"></td>
+                                                <td class="text-center">
+                                                    <a class="btn btn-outline-info" data-toggle="tooltip" data-placement="top"
+                                                    	th:href="@{'/instituciones/ver/'+${institucion.ruc}}" data-original-title="Ver Institucion">
+                                                        <i class="fa fa-eye"></i>
+                                                    </a>
+                                                    <a th:if="${institucion.estado} == true" class="btn btn-outline-danger" data-toggle="tooltip" data-placement="top"
+                                                           th:href="@{'/instituciones/disabled/'+${institucion.id}}" data-original-title="Deshabilitar Institucion">
+                                                        <i class="fa fa-minus-circle"></i>
+                                                    </a>
+                                                    <a th:if="${institucion.estado}  == false" class="btn btn-outline-success" data-toggle="tooltip" data-placement="top"
+                                                           th:href="@{'/instituciones/enabled/'+${institucion.id}}" data-original-title="Habilitar Institucion">
+                                                        <i class="fa  fa-check"></i>
+                                                    </a>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+		</div>
+    
+    </div>
+    
+    <div th:replace="/admin/layout/layout :: scripts"></div>
+    
+</body>
+
+</html>

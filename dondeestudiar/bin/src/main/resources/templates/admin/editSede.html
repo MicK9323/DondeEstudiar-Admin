@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/admin/layout/layout :: head"></head>
+
+<body class="fix-header card-no-border fix-sidebar">
+<!-- Preloader -->
+<!--<div th:replace="admin/layout/layout :: preloader"></div>-->
+
+<div id="main-wrapper">
+
+    <header th:replace="/admin/layout/layout :: header"></header>
+
+    <aside th:replace="/admin/layout/layout :: sidebar"></aside>
+
+    <div class="page-wrapper">
+        <div class="container-fluid">
+            <div th:replace="/admin/layout/layout :: mensajes"></div>
+            <form th:action="@{/sedes/editar}" th:object="${sede}" method="post">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card card-outline-primary">
+                            <div class="card-header">
+                                <h4 class="m-b-0 text-white">Datos de Sede</h4>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12 col-lg-6">
+                                        <div class="form-group">
+                                            <label class="text-info"><strong>Nombre
+                                                de Sede</strong></label>
+                                            <input id="nomSede" type="text" th:errorclass="border-danger"
+                                                   th:field="*{nomSede}" class="form-control" autocomplete="off">
+                                            <small th:if="${#fields.hasErrors('nomSede')}"
+                                                   th:errors="*{nomSede}"
+                                                   class="text-danger"></small>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="text-info"><strong>Ubicación</strong></label>
+                                            <input id="ubiSede" th:value="${sede.ubicacion.getDescripcion()}"
+                                                   type="text" class="form-control" readonly="readonly">
+                                        </div>
+                                    </div>
+                                    <div id="ubigueo" class="col-sm-12 col-md-12 col-lg-6">
+                                        <div class="form-group">
+                                            <label class="text-info">
+                                                <strong>Dirección de Sede</strong>
+                                            </label>
+                                            <input id="direccion" th:field="*{direccion}" type="text"
+                                                   class="form-control" autocomplete="off" th:errorclass="border-danger">
+                                            <small th:if="${#fields.hasErrors('direccion')}"
+                                                   th:errors="*{direccion}"
+                                                   class="text-danger"></small>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="text-info">
+                                                <strong>Teléfono de Sede</strong>
+                                            </label>
+                                            <input id="telf" type="tel" th:field="*{telf}" th:errosclass="border-danger"
+                                                   class="form-control" autocomplete="off">
+                                            <small th:if="${#fields.hasErrors('telf')}"
+                                                   th:errors="*{telf}"
+                                                   class="text-danger"></small>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-6">
+                                        <div id="btnLocalizar" class="btn btn-outline-primary">
+                                            <i class="fa fa-map-marker"></i> Localizar
+                                        </div>
+                                    </div>
+                                </div>
+                                <br/>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <input type="hidden" th:field="*{cx}" id="cx" >
+                                        <input type="hidden" th:field="*{cy}" id="cy" >
+                                        <h4 class="text-info">Ubicación Geografica</h4>
+                                        <div id="map" class="gmaps" style="height: 200px;"></div>
+                                        <input type="hidden" id="coordenadas"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="card">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-md-12 col-lg-6">
+                                                        <button type="submit" class="btn btn-block btn-success">
+                                                            <i class="fa fa-check"></i> Guardar
+                                                        </button>
+                                                    </div>
+                                                    <div class="hidden-lg-up">
+                                                        <br /> <br />
+                                                    </div>
+                                                    <div class="col-md-12 col-lg-6">
+                                                        <a th:href="@{'/instituciones/ver/'+${sede.institucion.ruc}}" class="btn btn-block btn-inverse">
+                                                            <i class="fa fa-backward"></i> Regresar
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div th:replace="/admin/layout/layout :: scripts"></div>
+<script src="https://maps.google.com/maps/api/js?key=AIzaSyAgE-Gb6TvJTxMt1MMAKPFGJyEIVxgp4aA"></script>
+<script type="text/javascript">
+
+    var cx = parseFloat(document.getElementById('cx').value);
+    var cy = parseFloat(document.getElementById('cy').value);
+    var nombre = document.getElementById('nomSede').value;
+    console.log(cx+" "+cy);
+    function initMap() {
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 16,
+            center: {
+                lat: cx,
+                lng: cy
+            }
+        });
+        var marker = new google.maps.Marker({
+           position: { lat:cx, lng: cy}, map: map, title: nombre
+        });
+        var geocoder = new google.maps.Geocoder();
+
+        var infowindow = new google.maps.InfoWindow;
+
+        geocodeLatLng(geocoder,map,infowindow);
+
+        document.getElementById('btnLocalizar').addEventListener('click',
+            function () {
+                geocodeAddress(geocoder, map);
+            });
+    }
+
+    google.maps.event.addDomListener(window, 'load', initMap);
+
+    function geocodeAddress(geocoder, resultsMap) {
+        var region = $('#ubiSede').val().trim();
+        var direccion = $('#direccion').val().trim();
+        var buscado = direccion + ", " + region;
+        console.log("Direccion buscada: " + buscado);
+        if (region == "" || direccion == "") {
+            alertify
+                .alert("Ingrese la ubicacion y la direccion de la sede");
+        } else {
+            var address = buscado;
+            geocoder
+                .geocode(
+                    {
+                        'address': address
+                    },
+                    function (results, status) {
+                        if (status === 'OK') {
+                            resultsMap
+                                .setCenter(results[0].geometry.location);
+                            var marker = new google.maps.Marker(
+                                {
+                                    map: resultsMap,
+                                    position: results[0].geometry.location
+                                });
+                            document.getElementById("cx").value = marker.getPosition().lat().toString();
+                            document.getElementById("cy").value = marker.getPosition().lng().toString();
+                            console.log($('#cx').val());
+                            console.log($('#cy').val());
+                        } else {
+                            alertify
+                                .alert('No se pudo encontrar la ubicacion ingresada ' + status);
+                        }
+                    });
+        }
+    }
+
+    function geocodeLatLng(geocoder, map, infowindow) {
+        var latlng = {lat: parseFloat(cx), lng: parseFloat(cy)};
+        geocoder.geocode({'location': latlng}, function(results, status) {
+            if (status === 'OK') {
+                if (results[1]) {
+                    map.setZoom(16);
+                    var marker = new google.maps.Marker({
+                        position: latlng,
+                        map: map
+                    });
+                    infowindow.setContent(nombre);
+                    infowindow.open(map, marker);
+                } else {
+                    window.alert('No hay coincidencias');
+                }
+            } else {
+                window.alert('Error al localizar las coordenadas: ' + status);
+            }
+        });
+    }
+
+</script>
+
+</body>
+
+</html>
