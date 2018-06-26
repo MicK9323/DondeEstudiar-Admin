@@ -1,20 +1,27 @@
 <!DOCTYPE html>
 <html
         xmlns:th="http://www.thymeleaf.org">
-<head th:replace="/admin/layout/layout :: head"></head>
+<head th:replace="admin/layout/layout :: head"></head>
+<style>
+    #tbCarreras thead tr {
+        background: #2f3d4a;
+        border-color: #2f3d4a;
+        color: #ffffff;
+    }
+</style>
 <body class="fix-header card-no-border fix-sidebar">
 
 <div th:replace="admin/layout/layout :: preloader"></div>
 
 <div id="main-wrapper">
 
-    <header th:replace="/admin/layout/layout :: header"></header>
+    <header th:replace="admin/layout/layout :: header"></header>
 
-    <aside th:replace="/admin/layout/layout :: sidebar"></aside>
+    <aside th:replace="admin/layout/layout :: sidebar"></aside>
 
     <div class="page-wrapper">
         <div class="container-fluid">
-            <div th:replace="/admin/layout/layout :: mensajes"></div>
+            <div th:replace="admin/layout/layout :: mensajes"></div>
             <div class="row">
                 <div class="col-md-12">
                     <div class="card card-outline-inverse">
@@ -23,52 +30,21 @@
                         </div>
                         <div class="card-body">
                             <div class="row">
-                                <div class="col-sm-12 col-md-6 col-lg-7">
-                                    <form method="post">
-                                        <div class="form-group row">
-                                            <div class="col-md-7">
-                                                <input type="text" name="nombre" required autocomplete="off"
-                                                       placeholder="Buscar Carrera" class="form-control">
-                                            </div>
-                                            <div class="col-md-5">
-                                                <button type="submit" class="btn btn-outline-primary">
-                                                    <i class="fa fa-search"></i> Buscar
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </form>
+                                <div class="col-md-5">
+                                    <a th:href="@{/carreras/nuevo}" class="btn btn-outline-primary">
+                                        <i class="fa fa-plus-circle"></i> Agregar Carrera
+                                    </a>
                                 </div>
-                                <!--<div class="col-sm-12 col-md-6 col-lg-5" th:if="${mostrar} == true">-->
-                                <!--<div class="form-group row">-->
-                                <!--<div class="col-md-5">-->
-                                <!--<a th:href="@{/instituciones/listar}" class="btn btn-outline-info">-->
-                                <!--<i class="fa fa-arrow-circle-left"></i> Regresar-->
-                                <!--</a>-->
-                                <!--</div>-->
-                                <!--</div>-->
-                                <!--</div>-->
-                                <!--<div class="col-sm-12 col-md-6 col-lg-5">-->
-                                <!--<div class="form-group row">-->
-                                <!--<div class="col-md-12">-->
-                                <!--<select class="custom-select col-md-5 b-0">-->
-                                <!--<option value="">[Seleccione para filtrar]</option>-->
-                                <!--<option value="0">Todo</option>-->
-                                <!--<option value="1">Universidades</option>-->
-                                <!--<option value="2">Institutos</option>-->
-                                <!--</select>-->
-                                <!--</div>-->
-                                <!--</div>-->
-                                <!--</div>-->
                             </div>
                             <div class="row m-t-20">
                                 <div class="col-md-12">
-                                    <table class="table full-color-table full-inverse-table hover-table">
+                                    <table id="tbCarreras" class="table full-color-table full-inverse-table hover-table">
                                         <thead>
                                         <tr>
                                             <th class="text-center">Carrera</th>
                                             <th class="text-center">Area</th>
                                             <th class="text-center">Tipo</th>
-                                            <th class="text-center">Duracion</th>
+                                            <th class="text-center">Semestres</th>
                                             <th class="text-center"></th>
                                             <th class="text-center"></th>
                                         </tr>
@@ -78,7 +54,7 @@
                                             <td th:text="${carrera.nombre}">Nombre de Carrera</td>
                                             <td th:text="${carrera.area.nombre}">Area de la carrera</td>
                                             <td th:text="${carrera.tipoCarrera.desc}">Tipo de Carrera</td>
-                                            <td th:text="${carrera.getSemestres()}">Duracion en semestres</td>
+                                            <td class="text-center" th:text="${carrera.getDuracion()}">Duracion en semestres</td>
                                             <td>
                                                 <a class="btn btn-outline-warning" data-toggle="tooltip"
                                                    data-placement="top" data-original-title="Editar Carrera"
@@ -112,8 +88,15 @@
 
 </div>
 
-<div th:replace="/admin/layout/layout :: scripts"></div>
-
+<div th:replace="admin/layout/layout :: scripts"></div>
+<script>
+    $(document).ready(function() {
+        $('#tbCarreras').DataTable({
+            "lengthMenu": [5,10,15,20],
+            "language": {"url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"}
+        });
+    });
+</script>
 </body>
 
 </html>

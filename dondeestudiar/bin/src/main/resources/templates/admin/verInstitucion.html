@@ -1,20 +1,27 @@
 <!DOCTYPE html>
 <html 
 xmlns:th="http://www.thymeleaf.org">
-<head th:replace="/admin/layout/layout :: head" ></head>
+<head th:replace="admin/layout/layout :: head" ></head>
+<style>
+    #tbSedes thead tr {
+        background: #2f3d4a;
+        border-color: #2f3d4a;
+        color: #ffffff;
+    }
+</style>
 <body class="fix-header card-no-border fix-sidebar">
 	
     <div th:replace="admin/layout/layout :: preloader"></div>
     
     <div id="main-wrapper">
     
-    	<header th:replace="/admin/layout/layout :: header"></header>
+    	<header th:replace="admin/layout/layout :: header"></header>
     	
-    	<aside th:replace="/admin/layout/layout :: sidebar"></aside>
+    	<aside th:replace="admin/layout/layout :: sidebar"></aside>
     	
     	<div class="page-wrapper">
 			<div class="container-fluid">
-                <div th:replace="/admin/layout/layout :: mensajes"></div>
+                <div th:replace="admin/layout/layout :: mensajes"></div>
                 <div class="row">
                     <div class="col-md-5">
                         <div class="card card-outline-primary">
@@ -27,7 +34,8 @@ xmlns:th="http://www.thymeleaf.org">
                                     <h4 class="card-title m-t-10" th:text="${institucion.nombre}">Nombre de la institucion</h4>
                                     <div class="row text-center justify-content-md-center">
                                         <div class="col-6">
-                                            <a href="javascript:void(0)" class="btn btn-block btn-outline-dark">
+                                            <a th:href="@{'/carreras/mostrar/'+${institucion.id}}"
+                                               class="btn btn-block btn-outline-dark">
                                                 <font class="font-medium"><i class="mdi mdi-school"></i> Carreras</font>
                                             </a>
                                         </div>
@@ -94,25 +102,22 @@ xmlns:th="http://www.thymeleaf.org">
                             </div>
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-sm-12 col-md-6 col-lg-7">
-                                        <div class="form-group row">
-                                            <div class="col-md-7">
-                                                <input type="text" id="demo-input-search2" placeholder="Buscar Sede" class="form-control">
-                                            </div>
-                                            <div class="col-md-5">
-                                                <a href="" class="btn btn-outline-inverse">Buscar</a>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <form th:action="@{'/sedes/'+${institucion.ruc}+'/nuevo'}" method="get">
+                                        <button class="btn btn-primary">
+                                            <i class="fa fa-plus"></i> Registrar Sede
+                                        </button>
+                                    </form>
                                 </div>
-                                <div class="row">
-                                    <div class="table-responsive m-t-20 color-bordered-table inverse-bordered-table">
-                                        <table class="table">
+                                <div class="row" th:if="${!institucion.sedes.isEmpty()}">
+                                    <div class="table-responsive m-t-20">
+                                        <table id="tbSedes" class="table full-color-table full-inverse-table hover-table">
                                             <thead>
                                                 <tr>
                                                     <th class="text-left">Sede</th>
                                                     <th class="text-left">Departamento</th>
-                                                    <th class="text-center">Opciones</th>
+                                                    <th class="text-center"></th>
+                                                    <th class="text-center"></th>
+                                                    <th class="text-center"></th>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -124,13 +129,23 @@ xmlns:th="http://www.thymeleaf.org">
                                                            data-toggle="tooltip" data-placement="top" data-original-title="Editar Sede">
                                                             <i class="fa fa-edit"></i>
                                                         </a>
-                                                        <a class="btn btn-outline-danger" data-toggle="tooltip" data-placement="top" data-original-title="Deshabilitar Sede"
+                                                    </td>
+                                                    <td>
+                                                        <a class="btn btn-outline-danger" data-toggle="tooltip" data-placement="top"
+                                                           data-original-title="Deshabilitar Sede"
                                                            th:if="${sede.estado}==true" th:href="@{'/sedes/disabled/'+${sede.id}+'/'+${institucion.ruc}}">
                                                             <i class="fa fa-minus-circle"></i>
                                                         </a>
-                                                        <a class="btn btn-outline-success" data-toggle="tooltip" data-placement="top" data-original-title="Habilitar Sede"
+                                                        <a class="btn btn-outline-success" data-toggle="tooltip" data-placement="top"
+                                                           data-original-title="Habilitar Sede"
                                                             th:if="${sede.estado}==false" th:href="@{'/sedes/enabled/'+${sede.id}+'/'+${institucion.ruc}}">
                                                             <i class="fa fa-check"></i>
+                                                        </a>
+                                                    </td>
+                                                    <td>
+                                                        <a class="btn btn-outline-success" data-toggle="tooltip" data-placement="top"
+                                                           data-original-title="Ver Carreras" th:href="@{'/carreras/sede/'+${sede.id}+'/mostrar'}">
+                                                            <i class="mdi mdi-school"></i>
                                                         </a>
                                                     </td>
                                                 </tr>
@@ -146,9 +161,16 @@ xmlns:th="http://www.thymeleaf.org">
 		</div>
     
     </div>
-    
-    <div th:replace="/admin/layout/layout :: scripts"></div>
-    
+
+    <div th:replace="admin/layout/layout :: scripts"></div>
+    <script>
+        $(document).ready(function() {
+            $('#tbSedes').DataTable({
+                "lengthMenu": [5,10,15,20],
+                "language": {"url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"}
+            });
+        });
+    </script>
 </body>
 
 </html>

@@ -59,7 +59,7 @@
                                                                     <label class="control-label font-bold">Nombres</label>
                                                                     <input type="text" id="nombre" class="form-control"
                                                                            placeholder="Nombres" th:field="*{nom_user}"
-                                                                           data-ng-model="txtNombre.text" normal-text-user
+                                                                           data-ng-model="txtNombre.text" normal-text-name
 																		   data-ng-show="txtNombre.visible" required
 																		   maxlength={{txtNombre.length}} 
                                                                            th:errorclass="border-danger">
@@ -74,7 +74,7 @@
                                                                     <label class="control-label font-bold">Apellidos</label>
                                                                     <input type="text" id="apellido" class="form-control"
                                                                            placeholder="Nombres" th:field="*{ape_user}"
-                                                                           data-ng-model="txtApellido.text" normal-text-user
+                                                                           data-ng-model="txtApellido.text" normal-text-name
 																		   data-ng-show="txtApellido.visible" required
 																		   maxlength={{txtApellido.length}} 
                                                                            th:errorclass="border-danger">

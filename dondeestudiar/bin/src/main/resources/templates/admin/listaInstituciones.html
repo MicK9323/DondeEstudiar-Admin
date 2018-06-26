@@ -1,21 +1,28 @@
 <!DOCTYPE html>
 <html 
 xmlns:th="http://www.thymeleaf.org">
-<head th:replace="/admin/layout/layout :: head" ></head>
+<head th:replace="admin/layout/layout :: head" ></head>
+<style>
+    #tbInstituciones thead tr {
+        background: #2f3d4a;
+        border-color: #2f3d4a;
+        color: #ffffff;
+    }
+</style>
 <body class="fix-header card-no-border fix-sidebar">
 	
     <div th:replace="admin/layout/layout :: preloader"></div>
     
     <div id="main-wrapper">
     
-    	<header th:replace="/admin/layout/layout :: header"></header>
+    	<header th:replace="admin/layout/layout :: header"></header>
     	
-    	<aside th:replace="/admin/layout/layout :: sidebar"></aside>
+    	<aside th:replace="admin/layout/layout :: sidebar"></aside>
     	
     	<div class="page-wrapper">
 			<div class="container-fluid">
-			<div th:replace="/admin/layout/layout :: mensajes"></div>
-                <div class="row" th:if="!${mostrar} == true">
+			<div th:replace="admin/layout/layout :: mensajes"></div>
+                <div class="row">
                     <div class="col-md-12">
                         <div class="card bg-info text-white">
                             <div class="card-body">
@@ -40,46 +47,8 @@ xmlns:th="http://www.thymeleaf.org">
                     <div class="col-md-12">
                         <div class="card">
                             <div class="card-body">
-                                <div class="row">
-                                    <div class="col-sm-12 col-md-6 col-lg-7">
-                                    	<form th:action="@{/instituciones/buscar}" method="post">
-                                    		<div class="form-group row">
-	                                            <div class="col-md-7">
-	                                                <input type="text" name="nombre" required autocomplete="off"
-	                                                	placeholder="Buscar Institucion" class="form-control">
-	                                            </div>
-	                                            <div class="col-md-5">                                            	
-	                                                <button type="submit" class="btn btn-outline-primary">
-	                                                	<i class="fa fa-search"></i> Buscar
-	                                                </button>
-	                                            </div>
-                                        	</div>
-                                    	</form>                                        
-                                    </div>
-                                    <div class="col-sm-12 col-md-6 col-lg-5" th:if="${mostrar} == true">
-                                		<div class="form-group row">
-                                			<div class="col-md-5">
-                                				<a th:href="@{/instituciones/listar}" class="btn btn-outline-info">
-                                					<i class="fa fa-arrow-circle-left"></i> Regresar
-                                				</a>
-                                			</div>
-                                		</div>
-                                	</div>
-                                    <!--<div class="col-sm-12 col-md-6 col-lg-5">-->
-                                        <!--<div class="form-group row">-->
-                                            <!--<div class="col-md-12">-->
-                                                <!--<select class="custom-select col-md-5 b-0">-->
-                                                    <!--<option value="">[Seleccione para filtrar]</option>-->
-                                                    <!--<option value="0">Todo</option>-->
-                                                    <!--<option value="1">Universidades</option>-->
-                                                    <!--<option value="2">Institutos</option>-->
-                                                <!--</select>-->
-                                            <!--</div>-->
-                                        <!--</div>-->
-                                    <!--</div>-->
-                                </div>
                                 <div class="table-responsive m-t-20">
-                                    <table class="table color-bordered-table inverse-bordered-table vm no-th-brd pro-of-month">
+                                    <table id="tbInstituciones" class="table full-color-table full-inverse-table hover-table">
                                         <thead>
                                             <tr>
                                                 <th class="text-left">Logo</th>
@@ -121,8 +90,15 @@ xmlns:th="http://www.thymeleaf.org">
     
     </div>
     
-    <div th:replace="/admin/layout/layout :: scripts"></div>
-    
+    <div th:replace="admin/layout/layout :: scripts"></div>
+    <script>
+        $(document).ready(function() {
+            $('#tbInstituciones').DataTable({
+                "lengthMenu": [5,10,15,20],
+                "language": {"url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"}
+            });
+        });
+    </script>
 </body>
 
 </html>

@@ -1,19 +1,19 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="/admin/layout/layout :: head"></head>
-<body class="fix-header card-no-border fix-sidebar">
+<head th:replace="admin/layout/layout :: head"></head>
+<body class="fix-header card-no-border fix-sidebar"  id="ng-app" ng-app="InstitucionApp" ng-controller="InstitucionController" ng-init="init()">
 
 	<div th:replace="admin/layout/layout :: preloader"></div>
 
 	<div id="main-wrapper">
 
-		<header th:replace="/admin/layout/layout :: header"></header>
+		<header th:replace="admin/layout/layout :: header"></header>
 
-		<aside th:replace="/admin/layout/layout :: sidebar"></aside>
+		<aside th:replace="admin/layout/layout :: sidebar"></aside>
 
 		<div class="page-wrapper">
 			<div class="container-fluid">
-			<div th:replace="/admin/layout/layout :: mensajes"></div>
+			<div th:replace="admin/layout/layout :: mensajes"></div>
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="card">
@@ -33,11 +33,14 @@
 													<div class="col-md-8">
 														<div class="form-group">
 															<label for="telf">RUC</label>
-															<input readonly="readonly" placeholder="RUC"
-																maxlength="11" required autofocus th:field="*{ruc}"
+															<input readonly placeholder="RUC" id="ruc"
+																data-ng-model="txtRuc.text" required
+																data-ng-show="txtRuc.visible" numbers-only
+																data-maxlength={{txtRuc.length}}
+																autofocus th:field="*{ruc}"
 																type="text" class="form-control"
-																th:errorclass="border-danger"> <small
-																th:if="${#fields.hasErrors('ruc')}" th:error="*{ruc}"
+																th:errorclass="border-danger" /> 
+																<small th:if="${#fields.hasErrors('ruc')}" th:error="*{ruc}"
 																class="text-danger"></small>
 														</div>
 													</div>
@@ -45,8 +48,11 @@
 												<div class="row">
 													<div class="col-md-12">
 														<div class="form-group">
-															<label>Nombre de Institución</label> <input
-																th:field="*{nombre}" type="text"
+															<label>Nombre de Institución</label> 
+															<input th:field="*{nombre}" type="text" letters-only
+																data-ng-model="txtNombre.text" required
+																data-ng-show="txtNombre.visible" id="nombre"
+																data-maxlength={{txtNombre.length}}
 																class="form-control" th:errorclass="border-danger">
 															<span th:if="${#fields.hasErrors('nombre')}"
 																th:error="*{nombre}" class="text-danger"></span>
@@ -58,9 +64,12 @@
 														<div class="form-group">
 															<label for="web">Sitio Web</label> <input
 																th:field="*{website}" type="text"
-																class="form-control" id="web"
-																th:errorclass="border-danger"> <small
-																th:if="${#fields.hasErrors('website')}"
+																class="form-control" id="web" normal-text-limited
+																th:errorclass="border-danger" 
+																data-ng-model="txtSitioWeb.text" required
+																data-ng-show="txtSitioWeb.visible" 
+																maxlength={{txtSitioWeb.length}}>
+																 <small th:if="${#fields.hasErrors('website')}"
 																th:error="*{website}" class="text-danger"></small>
 														</div>
 													</div>
@@ -70,7 +79,10 @@
 															<input
 																th:field="*{telf}" type="tel"
 																class="form-control" id="telf"
-																th:errorclass="border-danger"> <small
+																th:errorclass="border-danger" required
+																data-ng-model="txtCentralTelf.text" numbers-only
+																data-ng-show="txtCentralTelf.visible"
+																maxlength={{txtCentralTelf.length}}> <small
 																th:if="${#fields.hasErrors('telf')}" th:error="*{telf}"
 																class="text-danger"></small>
 														</div>
@@ -151,12 +163,15 @@
 
 	</div>
 
-	<div th:replace="/admin/layout/layout :: scripts"></div>
+	<div th:replace="admin/layout/layout :: scripts"></div>
 	<!-- ============================================================== -->
 	<!-- Plugins for this page -->
 	<!-- ============================================================== -->
 	<script th:src="@{/tema/assets/plugins/dropify/dist/js/dropify.min.js}"></script>
 	<script th:src="@{/tema/js/institucion.js}"></script>
+	<script th:src="@{/angular/app/institucion-app.js}"></script>
+	<script th:src="@{/angular/app/controllers/institucion-controller.js}"></script>
+	
 </body>
 
 </html>

@@ -1,20 +1,20 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="/admin/layout/layout :: head"></head>
+<head th:replace="admin/layout/layout :: head"></head>
 
-<body class="fix-header card-no-border fix-sidebar">
+<body class="fix-header card-no-border fix-sidebar" id="ng-app" ng-app="SedeApp" ng-controller="SedeController" ng-init="init()">
 <!-- Preloader -->
-<!--<div th:replace="admin/layout/layout :: preloader"></div>-->
+<div th:replace="admin/layout/layout :: preloader"></div>
 
 <div id="main-wrapper">
 
-    <header th:replace="/admin/layout/layout :: header"></header>
+    <header th:replace="admin/layout/layout :: header"></header>
 
-    <aside th:replace="/admin/layout/layout :: sidebar"></aside>
+    <aside th:replace="admin/layout/layout :: sidebar"></aside>
 
     <div class="page-wrapper">
         <div class="container-fluid">
-            <div th:replace="/admin/layout/layout :: mensajes"></div>
+            <div th:replace="admin/layout/layout :: mensajes"></div>
             <form th:action="@{/sedes/editar}" th:object="${sede}" method="post">
                 <div class="row">
                     <div class="col-md-12">
@@ -26,10 +26,12 @@
                                 <div class="row">
                                     <div class="col-sm-12 col-md-12 col-lg-6">
                                         <div class="form-group">
-                                            <label class="text-info"><strong>Nombre
-                                                de Sede</strong></label>
+                                            <label class="text-info"><strong>Nombre de Sede</strong></label>
                                             <input id="nomSede" type="text" th:errorclass="border-danger"
-                                                   th:field="*{nomSede}" class="form-control" autocomplete="off">
+                                                   th:field="*{nomSede}" class="form-control" autocomplete="off"
+                                                   data-ng-model="txtNomSede.text" 
+												   data-ng-show="txtNomSede.visible" required
+												   maxlength={{txtNomSede.length}} letters-only />
                                             <small th:if="${#fields.hasErrors('nomSede')}"
                                                    th:errors="*{nomSede}"
                                                    class="text-danger"></small>
@@ -45,7 +47,10 @@
                                             <label class="text-info">
                                                 <strong>Dirección de Sede</strong>
                                             </label>
-                                            <input id="direccion" th:field="*{direccion}" type="text"
+                                            <input id="direccion" th:field="*{direccion}" type="text" 
+                                            	   data-ng-model="txtDirSede.text" normal-text
+												   data-ng-show="txtDirSede.visible" required
+												   maxlength={{txtDirSede.length}}
                                                    class="form-control" autocomplete="off" th:errorclass="border-danger">
                                             <small th:if="${#fields.hasErrors('direccion')}"
                                                    th:errors="*{direccion}"
@@ -56,7 +61,10 @@
                                                 <strong>Teléfono de Sede</strong>
                                             </label>
                                             <input id="telf" type="tel" th:field="*{telf}" th:errosclass="border-danger"
-                                                   class="form-control" autocomplete="off">
+                                                   class="form-control" autocomplete="off"
+                                                   data-ng-model="txtTefSede.text" numbers-only
+												   data-ng-show="txtTefSede.visible" required
+												   maxlength={{txtTefSede.length}} />
                                             <small th:if="${#fields.hasErrors('telf')}"
                                                    th:errors="*{telf}"
                                                    class="text-danger"></small>
@@ -111,8 +119,10 @@
         </div>
     </div>
 </div>
-<div th:replace="/admin/layout/layout :: scripts"></div>
+<div th:replace="admin/layout/layout :: scripts"></div>
 <script src="https://maps.google.com/maps/api/js?key=AIzaSyAgE-Gb6TvJTxMt1MMAKPFGJyEIVxgp4aA"></script>
+<script th:src="@{/angular/app/sede-app.js}"></script>
+<script th:src="@{/angular/app/controllers/sede-controller.js}"></script>
 <script type="text/javascript">
 
     var cx = parseFloat(document.getElementById('cx').value);

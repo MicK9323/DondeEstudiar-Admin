@@ -1,19 +1,19 @@
 <!DOCTYPE html>
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="/admin/layout/layout :: head"></head>
-<body class="fix-header card-no-border fix-sidebar">
+<head th:replace="admin/layout/layout :: head"></head>
+<body class="fix-header card-no-border fix-sidebar" id="ng-app" ng-app="InstitucionApp" ng-controller="InstitucionController" ng-init="init()">
 
 	<div th:replace="admin/layout/layout :: preloader"></div>
 
 	<div id="main-wrapper">
 
-		<header th:replace="/admin/layout/layout :: header"></header>
+		<header th:replace="admin/layout/layout :: header"></header>
 
-		<aside th:replace="/admin/layout/layout :: sidebar"></aside>
+		<aside th:replace="admin/layout/layout :: sidebar"></aside>
 
 		<div class="page-wrapper">
 			<div class="container-fluid">
-				<div th:replace="/admin/layout/layout :: mensajes"></div>
+				<div th:replace="admin/layout/layout :: mensajes"></div>
 				<div class="row">
 					<div class="col-lg-12">
 						<div class="card">
@@ -33,8 +33,11 @@
 													<div class="col-md-8">
 														<div class="form-group">
 															<input placeholder="RUC" maxlength="11" autocomplete="off"
-																autofocus th:field="*{ruc}" type="text"
-																class="form-control" th:errorclass="border-danger">
+																autofocus th:field="*{ruc}" type="text" numbers-only
+																class="form-control" th:errorclass="border-danger"
+																data-ng-model="txtRuc.text"
+																data-ng-show="txtRuc.visible"
+																data-maxlength={{txtRuc.length}}>
 															<small th:if="${#fields.hasErrors('ruc')}" 
 																th:errors="*{ruc}"
 																class="text-danger"></small>
@@ -53,7 +56,10 @@
 														<div class="form-group">
 															<label>Nombre de Institución</label> 
 															<input th:field="*{nombre}" type="text" autocomplete="off"
-																class="form-control" th:errorclass="border-danger">
+																class="form-control" th:errorclass="border-danger" 
+																data-ng-model="txtNombre.text" 
+																data-ng-show="txtNombre.visible" required
+																maxlength={{txtNombre.length}} letters-only />
 															<small th:if="${#fields.hasErrors('nombre')}" 
 																th:errors="*{nombre}"
 																class="text-danger"></small>
@@ -65,7 +71,10 @@
 														<div class="form-group">
 															<label for="web">Sitio Web</label> 
 															<input th:field="*{website}" type="text" autocomplete="off"
-																class="form-control" id="web" th:errorclass="border-danger">
+																class="form-control" id="web" th:errorclass="border-danger"
+																data-ng-model="txtSitioWeb.text" 
+																data-ng-show="txtSitioWeb.visible" required
+																maxlength={{txtSitioWeb.length}} normal-text />
 															<small th:if="${#fields.hasErrors('website')}" 
 																th:errors="*{website}"
 																class="text-danger"></small>
@@ -74,8 +83,11 @@
 													<div class="col-sm-12 col-md-6">
 														<div class="form-group">
 															<label for="telf">Central Telefónica</label> 
-																<input th:field="*{telf}" type="tel" autocomplete="off"
-																	class="form-control" id="telf" th:errorclass="border-danger">
+																<input th:field="*{telf}" type="tel" autocomplete="off" 
+																	class="form-control" id="telf" th:errorclass="border-danger"
+																	data-ng-model="txtCentralTelf.text"  
+																	data-ng-show="txtCentralTelf.visible" required 
+																	maxlength={{txtCentralTelf.length}} numbers-only />
 																<small th:if="${#fields.hasErrors('telf')}" 
 																th:errors="*{telf}"
 																class="text-danger"></small>
@@ -86,8 +98,8 @@
 											<div class="col-md-12 col-lg-5">
 												<div class="row">
 													<div class="col-md-12">
-														<input type="file" required name="file" id="input-file-now"
-															class="dropify">
+														<input type="file" data-ng-model="image" required name="file" id="input-file-now"
+															accept=".png, .jpg, .jpeg" class="dropify">
 													</div>
 												</div>
 											</div>
@@ -136,110 +148,127 @@
 											<div class="col-md-12">
 												<!-- ventana modal -->
 												<div class="modal fade bs-example-modal-lg" id="modalSede"
-													tabindex="-1" role="dialog"
-													aria-labelledby="myLargeModalLabel" style="display: none;"
-													aria-hidden="true">
-													<div class="modal-dialog modal-lg">
-														<div class="modal-content">
-															<div class="modal-header">
-																<h4 class="modal-title text-info" id="myLargeModalLabel">
-																	<strong>Datos de Sede</strong>
-																</h4>
-																<button type="button" class="close" data-dismiss="modal"
-																	aria-hidden="true">x</button>
-															</div>
-															<div class="modal-body">
-																<div class="row">
-																	<div class="col-sm-12 col-md-12 col-lg-6">
-																		<div class="form-group">
-																			<label class="text-info"><strong>Nombre
-																					de Sede</strong></label> 
-																					<input id="nomSede" type="text"
-																				class="form-control" autocomplete="off">
+														 tabindex="-1" role="dialog"
+														 aria-labelledby="myLargeModalLabel" style="display: none;"
+														 aria-hidden="true">
+														<div class="modal-dialog modal-lg">
+															<div class="modal-content">
+																<div class="modal-header">
+																	<h4 class="modal-title text-info" id="myLargeModalLabel">
+																		<strong>Datos de Sede</strong>
+																	</h4>
+																	<button type="button" class="close" data-dismiss="modal"
+																			aria-hidden="true">x</button>
+																</div>
+																<div class="modal-body">
+																	<div id="error" class="alert alert-danger alert-dismissible fade show"
+																		 role="alert" th:if="${sedeError != null}">
+																		<strong th:text="${sedeError}"></strong>
+																		<button type="button" class="close" data-dismiss="alert"
+																				aria-label="Close">
+																			<span aria-hidden="true">&times;</span>
+																		</button>
+																	</div>
+																	<div class="row">
+																		<div class="col-sm-12 col-md-12 col-lg-6">
+																			<div class="form-group">
+																				<label class="text-info"><strong>Nombre de Sede</strong></label>
+																				<input id="nomSede" type="text" class="form-control" autocomplete="off"
+																				data-ng-model="txtNomSede.text" ng-minlength="6"
+																			    data-ng-show="txtNomSede.visible"
+																			    maxlength={{txtNomSede.length}} letters-only />
+																			</div>
+																			<div class="form-group">
+																				<label class="text-info"><strong>Ubicación</strong></label>
+																				<span id="spinner" class="d-none">  <i class="fa fa-refresh fa-spin"></i></span>
+																				<input id="ubiSede" placeholder="Distrito, Provincia, Departamento"
+																					   type="text" class="form-control" autocomplete="off"
+																					   data-ng-model="txtUbicacion.text"  ng-minlength="10"
+												   									   maxlength={{txtUbicacion.length}} normal-text />
+																			</div>
+																			<div class="form-group">
+																				<div id="listaUbigueos">
+																					<table class="table table-hover">
+																						<tr class="ubicacion" th:each="item: ${ubigueos}">
+																							<td class="desc" th:text="${item.getDescripcion()}"></td>
+																							<td>
+																								<input type="hidden" class="codUbigueo"
+																									   th:value="${item.codUbigueo}" />
+																							</td>
+																						</tr>
+																					</table>
+																				</div>
+																			</div>
 																		</div>
-																		<div class="form-group">
-																			<label class="text-info"><strong>Ubicación</strong></label>
-																			<input id="ubiSede" placeholder="Ubicacion"
-																				type="text" class="form-control" autocomplete="off">
+																		<div id="ubigueo" class="col-sm-12 col-md-12 col-lg-6">
+																			<div class="form-group">
+																				<label class="text-info"><strong>Dirección de Sede</strong></label>
+																				<input id="direccion" type="text" class="form-control" autocomplete="off"
+																				data-ng-model="txtDirSede.text" 
+																			    data-ng-show="txtDirSede.visible" 
+																			    maxlength={{txtDirSede.length}} normal-text />
+																			</div>
+																			<div class="form-group">
+																				<label class="text-info"><strong>Teléfono
+																					de Sede</strong></label>
+																				<input id="telfSede" type="tel"
+																					   class="form-control" autocomplete="off"
+																					   data-ng-model="txtTefSede.text"  ng-minlength="6"
+																				       data-ng-show="txtTefSede.visible" 
+																				       maxlength={{txtTefSede.length}} numbers-only />
+																			</div>
+																			<input type="hidden" id="cx" />
+																			<input type="hidden" id="cy" />
 																		</div>
-																		<div class="form-group">
-																			<div id="listaUbigueos">
-																				<table class="table table-hover">
-																					<tr class="ubicacion" th:each="item: ${ubigueos}">
-																						<td class="desc"
-																							th:text="${item.getDescripcion()}"></td>
-																						<td><input type="hidden" class="codUbigueo"
-																							th:value="${item.codUbigueo}" /></td>
-																					</tr>
-																				</table>
+																	</div>
+																	<div class="row">
+																		<div class="col-md-4">
+																			<div id="btnLocalizar" class="btn btn-outline-success">
+																				<i class="fa fa-map-marker"></i> Localizar
 																			</div>
 																		</div>
 																	</div>
-																	<div id="ubigueo" class="col-sm-12 col-md-12 col-lg-6">
-																		<div class="form-group">
-																			<label class="text-info"><strong>Dirección
-																					de Sede</strong></label> <input id="dirSede" type="text"
-																				class="form-control" autocomplete="off">
-																		</div>
-																		<div class="form-group">
-																			<label class="text-info"><strong>Teléfono
-																					de Sede</strong></label> 
-																					<input id="telfSede" type="tel"
-																				class="form-control" autocomplete="off">
+																	<br />
+																	<div class="row">
+																		<div class="col-md-12">
+																			<h4 class="text-info">Ubicación Geografica</h4>
+																			<div id="map" class="gmaps" style="height: 200px;"></div>
+																			<input type="hidden" id="coordenadas" />
 																		</div>
 																	</div>
 																</div>
-																<div class="row">
-																	<div class="col-md-4">
-																		<div id="btnLocalizar" class="btn btn-outline-success">
-																			<i class="fa fa-map-marker"></i> Localizar
-																		</div>
-																	</div>
-																</div>
-																<br />
-																<div class="row">
-																	<div class="col-md-12">
-																		<h4 class="text-info">Ubicación Geografica</h4>
-																		<div id="map" class="gmaps" style="height: 200px;"></div>
-																		<input type="hidden" id="coordenadas" />
-																	</div>
+																<div class="modal-footer">
+																	<div id="agregarSede" ng-click="agregarSede()"
+																		 class="btn btn-outline-success waves-effect">Agregar</div>
+																	<div
+																			class="btn btn-outline-danger waves-effect text-left"
+																			data-dismiss="modal">Cerrar</div>
 																</div>
 															</div>
-															<div class="modal-footer">
-																<div id="agregarSede"
-																	class="btn btn-outline-success waves-effect">Agregar</div>
-																<div
-																	class="btn btn-outline-danger waves-effect text-left"
-																	data-dismiss="modal">Close</div>
-															</div>
+															<!-- /.modal-content -->
 														</div>
-														<!-- /.modal-content -->
+														<!-- /.modal-dialog -->
 													</div>
-													<!-- /.modal-dialog -->
-												</div>
 												<div class="row">
 													<div class="col-md-4">
 														<div class="btn btn-outline-dark" data-toggle="modal"
-															data-target="#modalSede">Agregar Sede</div>
+															 data-target="#modalSede">Agregar Sede</div>
 													</div>
 												</div>
 												<br>
 												<div class="row">
-													<div class="col-md-12" id="detSedes">
-														<table class="table color-bordered-table inverse-bordered-table vm no-th-brd pro-of-month">
+													<div class="col-md-12">
+														<table id="detSedes" class="table full-color-table full-inverse-table">
 															<thead>
 																<tr>
-																	<th>Sede</th>
-																	<th>Dirección</th>
-																	<th>Teléfono</th>
+																	<th class="text-center">Item</th>
+																	<th class="text-left">Sede</th>
+																	<th class="text-center">Dirección</th>
+																	<th></th>
 																</tr>
 															</thead>
 															<tbody>
-																<tr th:each="item: ${listaSedes}">
-																	<td class="col-md-6" th:text="${item.nomSede}"></td>
-																	<td class="col-md-6" th:text="${item.direccion}"></td>
-																	<td class="col-md-6" th:text="${item.telf}"></td>
-																</tr>
+
 															</tbody>
 														</table>
 													</div>
@@ -252,7 +281,8 @@
 													<div class="card-body">
 														<div class="row">
 															<div class="col-md-12 col-lg-6">
-																<button type="submit" class="btn btn-block btn-outline-success">
+																<button type="submit"
+																		class="btn btn-block btn-outline-success">
 																	<i class="fa fa-save"></i> Guardar
 																</button>
 															</div>
@@ -280,7 +310,7 @@
 
 	</div>
 
-	<div th:replace="/admin/layout/layout :: scripts"></div>
+	<div th:replace="admin/layout/layout :: scripts"></div>
 	<!-- ============================================================== -->
 	<!-- Plugins for this page -->
 	<!-- ============================================================== -->
@@ -289,8 +319,16 @@
 	<!-- google maps api -->
 	<!-- <script th:src="@{/tema/assets/plugins/gmaps/gmaps.min.js}"></script>
 	<script th:src="@{/tema/assets/plugins/gmaps/jquery.gmaps.js}"></script> -->
+	<script th:src="@{/angular/angular.js}"></script>
+	<script th:src="@{/angular/app/institucion-app.js}"></script>
+	<script th:src="@{/angular/app/controllers/institucion-controller.js}"></script>
+	<script th:src="@{/angular/shared/utilJsApp.js}"></script>
 	<script type="text/javascript">
-
+		/*function confirmar(e) {
+			if(!confirm('¿Esta seguro de registrar esta institución?')){
+			    e.preventDefault();
+			}
+        }*/
         function initMap() {
 			var map = new google.maps.Map(document.getElementById('map'), {
 				zoom : 12,
@@ -311,7 +349,7 @@
 
 		function geocodeAddress(geocoder, resultsMap) {
 			var region = $('#ubiSede').val().trim();
-			var direccion = $('#dirSede').val().trim();
+			var direccion = $('#direccion').val().trim();
 			var buscado = direccion + ", " + region;
 			console.log("Direccion buscada: "+buscado);
 			if (region == "" || direccion == "") {
@@ -333,8 +371,12 @@
 													map : resultsMap,
 													position : results[0].geometry.location
 												});
-										document.getElementById("coordenadas").value = marker.getPosition().toString();
-										console.log($('#coordenadas').val());
+                                        document.getElementById("cx").value = marker.getPosition().lat().toString();
+                                        document.getElementById("cy").value = marker.getPosition().lng().toString();
+                                        console.log($('#cx').val());
+                                        console.log($('#cy').val());
+										/*document.getElementById("coordenadas").value = marker.getPosition().toString();
+										console.log($('#coordenadas').val());*/
 									} else {
 										alertify
 										  .alert('No se pudo encontrar la ubicacion ingresada '+ status);
