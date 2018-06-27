@@ -54,6 +54,7 @@
                                         <label class="control-label font-bold">Costo Anual</label>
                                         <input th:field="*{costoAnual}" type="text" class="form-control"
                                                th:errorclass="border-danger" required id="costoAnual"
+                                               formato-decimal pre-decimal=15 max-decimal=2 thousands-separator="" decimal-separator="."
                                                data-ng-model="txtCostoAnual.text"
 											   data-ng-show="txtCostoAnual.visible"
 											   maxlength={{txtCostoAnual.length}} />
@@ -63,7 +64,7 @@
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label class="control-label font-bold">Ingresantes %</label>
+                                        <label class="control-label font-bold">Ingresantes</label>
                                         <input th:field="*{ingresantes}" type="text" class="form-control"
                                                th:errorclass="border-danger" required id="ingresantes"
                                                data-ng-model="txtIngresante.text" numbers-only
