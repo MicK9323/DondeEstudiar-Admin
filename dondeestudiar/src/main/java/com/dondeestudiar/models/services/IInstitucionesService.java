@@ -9,23 +9,25 @@ import com.dondeestudiar.models.entities.Sede;
 
 public interface IInstitucionesService {
 	
-	public List<Institucion> listarInstituciones();
+	List<Institucion> listarInstituciones();
 	
-	public Institucion addInstitucion(Institucion obj);
+	Institucion addInstitucion(Institucion obj);
 	
-	public void saveInstitucion(Institucion obj);
+	void saveInstitucion(Institucion obj);
 	
-	public Institucion findByRuc(String ruc);
+	Institucion findByRuc(String ruc);
 
-	public Institucion findById(int id);
+	Institucion findById(int id);
 	
-	public void addSedes(ArrayList<Sede> sedes);
+	void addSedes(ArrayList<Sede> sedes);
 	
-	public List<Institucion> findByNombre(String nombre);
+	List<Institucion> findByNombre(String nombre);
 	
-	public void disabledInstitucion( int id );
+	void disabledInstitucion( int id );
 	
-	public void enabledInstitucion( int id );
+	void enabledInstitucion( int id );
+
+	boolean validarRuc(String ruc);
 
 	boolean SaveAndVerify(Institucion obj);
 	

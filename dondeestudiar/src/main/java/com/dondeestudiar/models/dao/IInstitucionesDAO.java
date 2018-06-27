@@ -29,6 +29,7 @@ public interface IInstitucionesDAO extends JpaRepository<Institucion, Integer> {
 		@Procedure
 		void sp_enabledInstitucion( @Param("id") int id );
 
-
+		@Query(nativeQuery = true, value = "execute sp_validarRuc :ruc")
+		int sp_validarRuc(@Param("ruc") String ruc);
 	
 }

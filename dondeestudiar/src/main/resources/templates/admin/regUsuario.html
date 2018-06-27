@@ -20,7 +20,7 @@
                     <h4 class="m-b-0 text-white" th:text="${titulo}"></h4></div>
                 <div class="card-body">
                     <form id="formUsuario" th:action="@{/usuarios/nuevo}" enctype="multipart/form-data"
-                          th:object="${newUser}" method="post">
+                          th:object="${usuario}" method="post">
                         <div class="row">
                             <div class="col-md-8">
                                 <div class="row p-t-20">

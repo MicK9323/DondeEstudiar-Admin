@@ -14,12 +14,13 @@
 
     <div class="page-wrapper">
         <div class="container-fluid">
+            <div th:replace="admin/layout/layout :: mensajes"></div>
             <div class="card card-outline-inverse">
                 <div class="card-header">
                     <h4 class="m-b-0 text-white" th:text="${titulo}"></h4></div>
                 <div class="card-body">
                     <form th:action="@{/usuarios/editar}" enctype="multipart/form-data"
-                          th:object="${user}" method="post">
+                          th:object="${usuario}" method="post">
                         <div class="row">
                             <div class="col-md-8">
                                 <div class="row p-t-20">
@@ -102,7 +103,8 @@
                                 <div class="row p-t-20">
                                     <div class="col-md-12">
                                         <h4 class="font-bold">Cambiar foto</h4>
-                                        <input type="file" th:data-default-file="${user.rutaFoto}" name="file" id="input-file-now" class="dropify">
+                                        <input type="file" th:data-default-file="${usuario.rutaFoto}" name="file" id="input-file-now" class="dropify">
+                                        <!--<input th:if="${usuario.rutaFoto == null}" type="file" name="file" id="input-file-now" class="dropify">-->
                                     </div>
                                 </div>
                                 <div class="row p-t-20">

@@ -21,7 +21,7 @@
 								<h4 class="m-b-0 text-white">Registrar Institución</h4>
 							</div>
 							<div class="card-body">
-								<form th:action="@{/instituciones/nuevo}"
+								<form id="formInstitucion" th:action="@{/instituciones/nuevo}"
 									th:object="${institucion}" method="post"
 									enctype="multipart/form-data">
 									<div class="form-body">
@@ -32,7 +32,7 @@
 												<div class="row">
 													<div class="col-md-8">
 														<div class="form-group">
-															<input placeholder="RUC" maxlength="11" autocomplete="off"
+															<input id="ruc" placeholder="RUC" maxlength="11" autocomplete="off"
 																autofocus th:field="*{ruc}" type="text" numbers-only
 																class="form-control" th:errorclass="border-danger"
 																data-ng-model="txtRuc.text"
@@ -43,13 +43,13 @@
 																class="text-danger"></small>
 														</div>
 													</div>
-													<div class="col-md-4">
+													<!--<div class="col-md-4">
 														<div class="form-group">
 															<button class="btn btn-outline-primary btn-block">
 																<i class="fa fa-search"></i> Consultar
 															</button>
 														</div>
-													</div>
+													</div>-->
 												</div>
 												<div class="row">
 													<div class="col-md-12">
@@ -281,7 +281,7 @@
 													<div class="card-body">
 														<div class="row">
 															<div class="col-md-12 col-lg-6">
-																<button type="submit"
+																<button id="btnEnviar" type="submit"
 																		class="btn btn-block btn-outline-success">
 																	<i class="fa fa-save"></i> Guardar
 																</button>
@@ -324,11 +324,33 @@
 	<script th:src="@{/angular/app/controllers/institucion-controller.js}"></script>
 	<script th:src="@{/angular/shared/utilJsApp.js}"></script>
 	<script type="text/javascript">
-		/*function confirmar(e) {
-			if(!confirm('¿Esta seguro de registrar esta institución?')){
-			    e.preventDefault();
-			}
-        }*/
+
+		$(document).ready(function () {
+
+		    function validacionRuc(ruc) {
+                var options = {
+                    type: "POST",
+                    url: '/instituciones/validaruc',
+                    data: {ruc: ruc},
+                    timeout: 600000
+                }
+                return $.ajax(options);
+            }
+
+            $('#btnEnviar').click(function () {
+				var ruc = $('#ruc').val();
+				var validacion = validacionRuc(ruc);
+				validacion.done(function (result) {
+					if(result == true){
+					    $('#formInstitucion').submit();
+					}else{
+					    alertify.alert("El ruc ingresado ya se encuentra registrado");
+					}
+                })
+            });
+
+        });
+
         function initMap() {
 			var map = new google.maps.Map(document.getElementById('map'), {
 				zoom : 12,

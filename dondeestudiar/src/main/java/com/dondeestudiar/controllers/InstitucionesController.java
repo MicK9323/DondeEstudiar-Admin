@@ -52,6 +52,14 @@ public class InstitucionesController {
         return new Institucion();
     }
 
+    // Validar ruc unico
+    @PostMapping(value = "/validaruc")
+    @ResponseBody
+    public boolean ValidarRuc(@RequestParam String ruc){
+        boolean valida = institucionesService.validarRuc(ruc);
+        return valida;
+    }
+
     // Autocompletar ubigueos
     @GetMapping(value = "/cargar-ubigueo/{term}")
     public String cargarUbigueo(@PathVariable String term, Map<String, Object> model) {
