@@ -4,6 +4,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 
 @Entity
@@ -19,9 +22,11 @@ public class CarreraSede implements Serializable {
     private boolean acreditado;
 
     @Column(name = "costo_anual")
+    @Min(0)
     private double costoAnual;
 
     @Column(name = "rel_ingresantes_postulantes")
+    @Min(10) @Max(100)
     private int ingresantes;
 
     @ManyToOne

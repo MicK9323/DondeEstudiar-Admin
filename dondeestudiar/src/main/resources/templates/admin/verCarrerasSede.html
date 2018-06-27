@@ -24,11 +24,6 @@
             <div th:replace="admin/layout/layout :: mensajes"></div>
             <div class="row m-b-5">
                 <div class="col-md-6">
-                    <button role="button" class="btn btn-outline-info">
-                        <i class="mdi mdi-school"></i> Agregar Carrera
-                    </button>
-                </div>
-                <div class="col-md-6 text-right">
                     <form th:action="@{'/instituciones/ver/'+${sede.institucion.ruc}}">
                         <button role="button"
                                 class="btn btn-outline-dark">
@@ -41,7 +36,8 @@
                 <div class="col-md-12">
                     <div class="card card-outline-inverse">
                         <div class="card-header">
-                            <h4 class="m-b-0 text-white" th:text="${'Carreras - '+sede.nomSede}">Lista de Carreras</h4></div>
+                            <h4 class="m-b-0 text-white" th:text="${'Carreras - '+sede.nomSede}">Lista de Carreras</h4>
+                        </div>
                         <div class="card-body">
                             <div class="alert alert-info alert-dismissible fade show"
                                  role="alert" th:if="${vacio != null}">
@@ -62,6 +58,7 @@
                                     <th class="text-center">Costo Anual</th>
                                     <th class="text-center">Ingresantes (%)</th>
                                     <th class="text-center"></th>
+                                    <th class="text-center"></th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -73,9 +70,17 @@
                                     <td class="text-center" th:text="${'S/. '+item.costoAnual}">CostoAnual</td>
                                     <td class="text-center" th:text="${item.ingresantes+'%'}">Ingresantes</td>
                                     <td>
-                                        <a class="btn btn-outline-success btnEditar" data-toggle="tooltip"
+                                        <a th:href="@{'/carreras/'+${item.carrera.id}+'/ver/'+${item.sede.id}}"
+                                           class="btn btn-outline-success" data-toggle="tooltip"
                                            data-placement="top" data-original-title="Editar">
                                             <i class="mdi mdi-table-edit"></i>
+                                        </a>
+                                    </td>
+                                    <td>
+                                        <a th:href="@{'/carreras/'+${item.carrera.id}+'/retirar/'+${item.sede.id}}"
+                                           class="btn btn-outline-danger" data-toggle="tooltip"
+                                           data-placement="top" data-original-title="Quitar Carrera de esta sede">
+                                            <i class="mdi mdi-delete-circle"></i>
                                         </a>
                                     </td>
                                 </tr>
@@ -94,7 +99,7 @@
 <script>
     $(document).ready(function () {
         $('#tbCarrerasSede').DataTable({
-            "lengthMenu": [5,10,15,20],
+            "lengthMenu": [5, 10, 15, 20],
             "language": {"url": "//cdn.datatables.net/plug-ins/1.10.16/i18n/Spanish.json"}
         });
     });

@@ -5,6 +5,7 @@ import org.hibernate.annotations.Parameter;
 import org.hibernate.result.Output;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 
 import java.util.List;
@@ -16,5 +17,11 @@ public interface ICarreraSedeDAO extends JpaRepository<CarreraSede, Integer> {
 
     @Query(nativeQuery = true, value = "execute sp_validarAsignacion :idCarrera, :idSede")
     int sp_validarAsignacion(@Param("idCarrera") int idCarrera, @Param("idSede") int idSede);
+
+    @Query(nativeQuery = true, value = "execute sp_buscarDetalle :idCarrera, :idSede")
+    CarreraSede buscarDetalle(@Param("idCarrera") int idCarrera, @Param("idSede") int idSede);
+
+    @Procedure
+    void sp_retirarCarrera(@Param("idCarrera") int idCarrera, @Param("idSede") int idSede);
 
 }

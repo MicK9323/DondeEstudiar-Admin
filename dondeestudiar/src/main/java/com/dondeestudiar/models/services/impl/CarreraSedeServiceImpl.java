@@ -2,6 +2,7 @@ package com.dondeestudiar.models.services.impl;
 
 import com.dondeestudiar.models.dao.ICarreraSedeDAO;
 import com.dondeestudiar.models.entities.CarreraSede;
+import com.dondeestudiar.models.entities.CarreraSedePK;
 import com.dondeestudiar.models.services.ICarreraSedeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,21 @@ public class CarreraSedeServiceImpl implements ICarreraSedeService {
            return true;
        else
            return false;
+    }
+
+    @Override
+    public void EditarDetalle(CarreraSede detalle) {
+        carreraSedeDAO.save(detalle);
+    }
+
+    @Override
+    public CarreraSede buscarDetalle(int idCarrera, int idSede) {
+        return carreraSedeDAO.buscarDetalle(idCarrera,idSede);
+    }
+
+    @Override
+    public void sp_retirarCarrera(int idCarrera, int idSede) {
+        carreraSedeDAO.sp_retirarCarrera(idCarrera,idSede);
     }
 
     @Override

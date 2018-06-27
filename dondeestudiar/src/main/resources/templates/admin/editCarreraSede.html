@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html
+        xmlns:th="http://www.thymeleaf.org">
+<head th:replace="admin/layout/layout :: head"></head>
+<body class="fix-header card-no-border fix-sidebar">
+
+<div th:replace="admin/layout/layout :: preloader"></div>
+
+<div id="main-wrapper">
+
+    <header th:replace="admin/layout/layout :: header"></header>
+
+    <aside th:replace="admin/layout/layout :: sidebar"></aside>
+
+    <div class="page-wrapper">
+        <div class="container-fluid">
+            <div th:replace="admin/layout/layout :: mensajes"></div>
+            <div class="row m-b-5">
+                <div class="col-md-6">
+                    <form th:action="@{'/carreras/sede/'+${carreraSede.id.idSede}+'/mostrar'}">
+                        <button role="button"
+                                class="btn btn-outline-dark">
+                            <i class="fa fa-home"></i> Regresar
+                        </button>
+                    </form>
+                </div>
+            </div>
+            <div class="card card-outline-inverse">
+                <div class="card-header">
+                    <h4 class="m-b-0 text-white" th:text="${titulo}">Card Title</h4></div>
+                <div class="card-body">
+                    <form th:action="@{/carreras/detalle/editar}" th:object="${carreraSede}" method="post">
+                        <div class="form-body">
+                            <div class="row p-t-20">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label font-bold">Carrera</label>
+                                        <input th:value="${carreraSede.carrera.nombre}" type="text" class="form-control" readonly>
+                                        <input type="hidden" th:field="*{id.idCarrera}">
+                                        <input type="hidden" th:field="*{id.idSede}">
+                                        <input type="hidden" th:field="*{identificador}">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label font-bold">Sede</label>
+                                        <input th:value="${carreraSede.sede.nomSede}" type="text" class="form-control" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row p-t-20">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label font-bold">Costo Anual</label>
+                                        <input th:field="*{costoAnual}" type="text" class="form-control"
+                                               th:errorclass="border-danger">
+                                        <small th:if="${#fields.hasErrors('costoAnual')}"
+                                               th:errors="*{costoAnual}" class="text-danger"></small>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label font-bold">Ingresantes</label>
+                                        <input th:field="*{ingresantes}" type="text" class="form-control"
+                                               th:errorclass="border-danger">
+                                        <small th:if="${#fields.hasErrors('ingresantes')}"
+                                               th:errors="*{ingresantes}" class="text-danger"></small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row p-t-20">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="control-label font-bold">Acreditado</label>
+                                        <select th:field="*{acreditado}" class="form-control custom-select">
+                                            <option th:value="true">Si</option>
+                                            <option th:value="false">No</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group p-t-20">
+                                        <button type="submit" class="btn btn-block btn-outline-success">
+                                            <i class="fa fa-save"></i> Guardar Cambios
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div th:replace="admin/layout/layout :: scripts"></div>
+
+</body>
+
+</html>
