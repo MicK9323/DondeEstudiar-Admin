@@ -108,6 +108,7 @@
                                                 <input th:field="*{remuneracion}" type="text" autocomplete="off"
                                                        class="form-control" id="remuneracion" required
                                                        th:errorclass="border-danger"
+                                                       formato-decimal pre-decimal=15 max-decimal=2 thousands-separator="" decimal-separator="."
                                                        data-ng-model="txtRemuneracion.text"
 													   data-ng-show="txtRemuneracion.visible"
 													   maxlength={{txtRemuneracion.length}}>

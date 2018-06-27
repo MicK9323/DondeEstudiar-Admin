@@ -48,14 +48,14 @@ carreraApp.controller("CarreraController", function($scope, $compile) {
 	};
     
     $scope.txtCostoAnual = {
-		text : "",
+		text : $("#costoAnual").val(),
 		length : 6,
 		enabled : false,
 		visible : true
 	};
     
     $scope.txtIngresante = {
-		text : "",
+		text : $("#ingresantes").val(),
 		length : 3,
 		enabled : false,
 		visible : true

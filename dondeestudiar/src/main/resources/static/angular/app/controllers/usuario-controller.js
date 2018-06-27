@@ -24,7 +24,7 @@ usuarioApp.controller("UsuarioController", function($scope) {
 	
 	$scope.txtIdUsuario = {
 		text :$("#usuario").val(),
-		length : 35,
+		length : 8,
 		enabled : false,
 		visible : true
 	};

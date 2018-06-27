@@ -228,6 +228,7 @@ utiljsApp.directive('normalText', function () {
       require: 'ngModel',
       link: function(scope, element, attr, ngModelCtrl) {
 	        function fromUser(text) {
+        	  text = text == undefined ? "" : text;
 	          var transformedInput = text.replace(/[^A-Za-zÁÉÍÓÚñáéíóúÑ?[0-9\s\.\-\#\,\]?]/g, '');
 	          transformedInput = transformedInput.replace(/\s{2,}/g, ' ');
 //	          var capitalized = transformedInput.toUpperCase();// CONVIRTIENDO A
@@ -248,6 +249,7 @@ utiljsApp.directive('normalTextUser', function () {
       require: 'ngModel',
       link: function(scope, element, attr, ngModelCtrl) {
 	        function fromUser(text) {
+	          text = text == undefined ? "" : text;
 	          var transformedInput = text.replace(/[^A-Za-zÁÉÍÓÚñáéíóúÑ?[0-9\.\]?]/g, '');
 	          transformedInput = transformedInput.replace(/\s{2,}/g, ' ');
 	          var capitalized = transformedInput.toUpperCase();// CONVIRTIENDO A
@@ -268,6 +270,7 @@ utiljsApp.directive('normalTextName', function () {
       require: 'ngModel',
       link: function(scope, element, attr, ngModelCtrl) {
 	        function fromUser(text) {
+	          text = text == undefined ? "" : text;
 	          var transformedInput = text.replace(/[^A-Za-zÁÉÍÓÚñáéíóúÑ?[\s\]?]/g, '');
 	          transformedInput = transformedInput.replace(/\s{2,}/g, ' ');
 //	          var capitalized = transformedInput.toUpperCase();// CONVIRTIENDO A
@@ -289,6 +292,7 @@ utiljsApp.directive('normalTextLimited', function () {
       require: 'ngModel',
       link: function(scope, element, attr, ngModelCtrl) {
 	        function fromUser(text) {
+	          text = text == undefined ? "" : text;
 	          var transformedInput = text.replace(/[^A-Za-zÁÉÍÓÚñáéíóúÑ?[0-9\.\-\]?]/g, '');
 	          transformedInput = transformedInput.replace(/\s{2,}/g, ' ');
 //	          var capitalized = transformedInput.toUpperCase();// CONVIRTIENDO A

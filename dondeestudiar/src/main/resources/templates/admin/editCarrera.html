@@ -65,7 +65,7 @@
 																en semestres. </span>
 														</a> <input th:field="*{duracion}" type="text"
 															autocomplete="off" class="form-control" id="duracion" required
-															th:errorclass="border-danger"
+															th:errorclass="border-danger" 
 															data-ng-model="txtDuracion.text"
 														    data-ng-show="txtDuracion.visible" 
 														    maxlength={{txtDuracion.length}} numbers-only> <small
@@ -84,7 +84,7 @@
 															th:errorclass="border-danger" required
 															data-ng-model="txtPopularidad.text"
 														    data-ng-show="txtPopularidad.visible"
-														    maxlength={{txtPopularidad.length}} numbers-only> <small
+														    maxlength={{txtPopularidad.length}} numbers-only /> <small
 															th:if="${#fields.hasErrors('popularidad')}"
 															th:errors="*{popularidad}" class="text-danger"></small>
 													</div>
@@ -95,7 +95,8 @@
 													<label>Remuneración Promedio</label> <input
 														th:field="*{remuneracion}" type="text" required
 														autocomplete="off" class="form-control" id="remuneracion"
-														th:errorclass="border-danger" 
+														th:errorclass="border-danger"  
+														formato-decimal pre-decimal=15 max-decimal=2 thousands-separator="" decimal-separator="."
 														data-ng-model="txtRemuneracion.text"
 													    data-ng-show="txtRemuneracion.visible"
 													    maxlength={{txtRemuneracion.length}}> <small
@@ -155,10 +156,8 @@
 		th:src="@{/tema/assets/plugins/sticky-kit-master/sticky-kit.min.js}"></script>
 	<script th:src="@{/tema/assets/plugins/sparkline/sparkline.min.js}"></script>
 	<script th:src="@{/tema/assets/plugins/dropify/dist/js/dropify.min.js}"></script>
-	<script th:src="@{/angular/angular.js}"></script>
 	<script th:src="@{/angular/app/carrera-app.js}"></script>
 	<script th:src="@{/angular/app/controllers/carrera-controller.js}"></script>
-	<script th:src="@{/angular/shared/utilJsApp.js}"></script>
 	
 	<script>
     // Basic
