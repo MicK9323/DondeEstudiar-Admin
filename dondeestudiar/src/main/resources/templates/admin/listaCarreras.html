@@ -50,7 +50,7 @@
                                         </tr>
                                         </thead>
                                         <tbody>
-                                        <tr th:each="carrera: ${carreras}">
+                                        <tr th:class="${carrera.estado == false? 'table-active' : ''}" th:each="carrera: ${carreras}">
                                             <td th:text="${carrera.nombre}">Nombre de Carrera</td>
                                             <td th:text="${carrera.area.nombre}">Area de la carrera</td>
                                             <td th:text="${carrera.tipoCarrera.desc}">Tipo de Carrera</td>
@@ -63,13 +63,13 @@
                                                 </a>
                                             </td>
                                             <td th:if="${carrera.estado}==true">
-                                                <a class="btn btn-outline-danger" data-toggle="tooltip"
+                                                <a th:href="@{'/carreras/disabled/'+${carrera.id}}" class="btn btn-outline-danger" data-toggle="tooltip"
                                                    data-placement="top" data-original-title="Deshabilitar Carrera">
                                                     <i class="mdi mdi-block-helper"></i>
                                                 </a>
                                             </td>
                                             <td th:if="${carrera.estado}==false">
-                                                <a class="btn btn-outline-success" data-toggle="tooltip"
+                                                <a th:href="@{'/carreras/enabled/'+${carrera.id}}" class="btn btn-outline-success" data-toggle="tooltip"
                                                    data-placement="top" data-original-title="Habilitar Carrera">
                                                     <i class="mdi mdi-checkbox-marked-outline"></i>
                                                 </a>

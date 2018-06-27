@@ -7,16 +7,20 @@ import java.util.List;
 
 public interface ICarreraService {
 
-    public List<Carrera> listarCarreras();
+    List<Carrera> listarCarreras();
 
-    public void guardar(Carrera obj);
+    void guardar(Carrera obj);
 
-    public Carrera buscar(int id);
+    Carrera buscar(int id);
 
-    public boolean SaveAndVerify(Carrera obj);
+    boolean SaveAndVerify(Carrera obj);
 
-    public List<Carrera> sp_carrerasInstitucion(int id);
+    List<Carrera> sp_carrerasInstitucion(int id);
 
-    public List<Carrera> sp_cargarCarreras(String term);
+    List<Carrera> sp_cargarCarreras(String term);
+
+    void sp_disabledCarrera(String idCarrera);
+
+    void sp_enabledCarrera(String idCarrera);
 
 }

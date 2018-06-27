@@ -48,4 +48,14 @@ public class CarreraServiceImpl implements ICarreraService {
     public List<Carrera> sp_cargarCarreras(String term) {
         return carreraDAO.sp_cargarCarreras(term.trim());
     }
+
+    @Override
+    public void sp_disabledCarrera(String idCarrera) {
+        carreraDAO.sp_disabledCarrera(idCarrera);
+    }
+
+    @Override
+    public void sp_enabledCarrera(String idCarrera) {
+        carreraDAO.sp_enabledCarrera(idCarrera);
+    }
 }

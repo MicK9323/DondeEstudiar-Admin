@@ -185,6 +185,22 @@ public class CarrerasController {
         return "redirect:/carreras/listar";
     }
 
+    // Deshabilitar Carrera
+    @GetMapping(value = "/disabled/{idCarrera}")
+    public String DisabledCarrera(@PathVariable String idCarrera, RedirectAttributes flash){
+        carreraService.sp_disabledCarrera(idCarrera);
+        flash.addFlashAttribute("success",Constantes.CHANGES_SUCCESSFULL);
+        return "redirect:/carreras/listar";
+    }
+
+    // Habilitar Carrera
+    @GetMapping(value = "/enabled/{idCarrera}")
+    public String EnabledCarrera(@PathVariable String idCarrera, RedirectAttributes flash){
+        carreraService.sp_enabledCarrera(idCarrera);
+        flash.addFlashAttribute("success",Constantes.CHANGES_SUCCESSFULL);
+        return "redirect:/carreras/listar";
+    }
+
     //    Validar Session
     public boolean validarSession(HttpServletRequest request) {
         if (request.getSession().getAttribute("logedusuario") == null) {
