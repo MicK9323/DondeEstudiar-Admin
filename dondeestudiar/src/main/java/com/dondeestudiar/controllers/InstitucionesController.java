@@ -60,6 +60,14 @@ public class InstitucionesController {
         return valida;
     }
 
+    // Validar nombre unico
+    @PostMapping(value = "/validanombre")
+    @ResponseBody
+    public boolean ValidarNombre(@RequestParam String nombre){
+        boolean valida = institucionesService.sp_validarInstitucion(nombre);
+        return valida;
+    }
+
     // Autocompletar ubigueos
     @GetMapping(value = "/cargar-ubigueo/{term}")
     public String cargarUbigueo(@PathVariable String term, Map<String, Object> model) {

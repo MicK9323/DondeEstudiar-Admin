@@ -30,5 +30,7 @@ public interface IInstitucionesService {
 	boolean validarRuc(String ruc);
 
 	boolean SaveAndVerify(Institucion obj);
+
+	boolean sp_validarInstitucion(String nombre);
 	
 }

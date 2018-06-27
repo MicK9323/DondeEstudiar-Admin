@@ -55,7 +55,7 @@
 													<div class="col-md-12">
 														<div class="form-group">
 															<label>Nombre de Institución</label> 
-															<input th:field="*{nombre}" type="text" autocomplete="off"
+															<input th:field="*{nombre}" id="nomInstitucion" type="text" autocomplete="off"
 																class="form-control" th:errorclass="border-danger" 
 																data-ng-model="txtNombre.text" 
 																data-ng-show="txtNombre.visible" required
@@ -337,16 +337,37 @@
                 return $.ajax(options);
             }
 
-            $('#btnEnviar').click(function () {
+            function validacionNombre(nombre) {
+                var options = {
+                    type: "POST",
+                    url: '/instituciones//validanombre',
+                    data: {nombre: nombre},
+                    timeout: 600000
+                }
+                return $.ajax(options);
+            }
+
+            $('#btnEnviar').click(function (e) {
+                e.preventDefault();
+                console.log('Llega');
 				var ruc = $('#ruc').val();
 				var validacion = validacionRuc(ruc);
 				validacion.done(function (result) {
+				    console.log(result);
 					if(result == true){
-					    $('#formInstitucion').submit();
+					    var nombre = $('#nomInstitucion').val();
+					    var validaNombre = validacionNombre(nombre);
+					    validaNombre.done(function (valida) {
+							if(valida == true){
+							    $('#formInstitucion').submit();
+							}else{
+                                alertify.alert("Nombre de institucion ya registrado");
+							}
+                        });
 					}else{
 					    alertify.alert("El ruc ingresado ya se encuentra registrado");
 					}
-                })
+                });
             });
 
         });

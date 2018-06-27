@@ -17,19 +17,22 @@ import com.dondeestudiar.models.entities.Institucion;
 @Repository("institucionesDAO")
 public interface IInstitucionesDAO extends JpaRepository<Institucion, Integer> {
 
-		Institucion findByRuc(String ruc);
-		
-		List<Institucion> findByNombreLikeIgnoreCase(String nombre);
+    Institucion findByRuc(String ruc);
 
-		List<Institucion> findAllByOrderByNombreAsc();
+    List<Institucion> findByNombreLikeIgnoreCase(String nombre);
 
-		@Procedure
-		void sp_disabledInstitucion( @Param("id") int id );
-		
-		@Procedure
-		void sp_enabledInstitucion( @Param("id") int id );
+    List<Institucion> findAllByOrderByNombreAsc();
 
-		@Query(nativeQuery = true, value = "execute sp_validarRuc :ruc")
-		int sp_validarRuc(@Param("ruc") String ruc);
-	
+    @Procedure
+    void sp_disabledInstitucion(@Param("id") int id);
+
+    @Procedure
+    void sp_enabledInstitucion(@Param("id") int id);
+
+    @Query(nativeQuery = true, value = "execute sp_validarRuc :ruc")
+    int sp_validarRuc(@Param("ruc") String ruc);
+
+    @Query(nativeQuery = true, value = "execute sp_validarInstitucion :nombre")
+    int sp_validarInstitucion(@Param("nombre") String nombre);
+
 }

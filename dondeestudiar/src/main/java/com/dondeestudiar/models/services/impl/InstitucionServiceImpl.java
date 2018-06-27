@@ -86,6 +86,15 @@ public class InstitucionServiceImpl implements IInstitucionesService {
 	}
 
 	@Override
+	public boolean sp_validarInstitucion(String nombre) {
+		int flag = institucionesDAO.sp_validarInstitucion(nombre.trim());
+		if(flag == 1)
+			return true;
+		else
+			return false;
+	}
+
+	@Override
 	public boolean SaveAndVerify(Institucion obj) {
 		if (institucionesDAO.saveAndFlush(obj).equals(obj)) {
 			return true;
