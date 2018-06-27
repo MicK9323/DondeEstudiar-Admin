@@ -39,6 +39,22 @@ public class UsuarioController {
         return "admin/listaUsuarios";
     }
 
+    // Validar que no se repita dni
+    @PostMapping(value = "/validardni")
+    @ResponseBody
+    public boolean ValidarDni(@RequestParam String dni){
+        boolean valida = usuarioService.validarDni(dni);
+        return valida;
+    }
+
+    // Validar que no se repita nombre de usuario
+    @PostMapping(value = "/validarusuario")
+    @ResponseBody
+    public boolean ValidarUsuario(@RequestParam String usuario){
+        boolean valida = usuarioService.validarUsuario(usuario);
+        return valida;
+    }
+
     // Registrar Usuario
     @GetMapping(value = "/registrar")
     public String RegistrarUsuario(HttpServletRequest request, Map<String, Object> model,
@@ -64,6 +80,7 @@ public class UsuarioController {
 
         if (result.hasErrors()) {
             model.put("error", Constantes.INVALID_DATA);
+            model.put("titulo","Registrar Usuario");
             return "admin/regUsuario";
         }
 

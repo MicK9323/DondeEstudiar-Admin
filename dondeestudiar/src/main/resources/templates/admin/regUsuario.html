@@ -14,11 +14,12 @@
 
     <div class="page-wrapper">
         <div class="container-fluid">
+            <div th:replace="admin/layout/layout :: mensajes"></div>
             <div class="card card-outline-inverse">
                 <div class="card-header">
                     <h4 class="m-b-0 text-white" th:text="${titulo}"></h4></div>
                 <div class="card-body">
-                    <form th:action="@{/usuarios/nuevo}" enctype="multipart/form-data"
+                    <form id="formUsuario" th:action="@{/usuarios/nuevo}" enctype="multipart/form-data"
                           th:object="${newUser}" method="post">
                         <div class="row">
                             <div class="col-md-8">
@@ -92,7 +93,7 @@
                                 </div>
                                 <div class="row p-t-20">
                                     <div class="col-md-12">
-                                        <button role="button" class="btn btn-block btn-outline-success">
+                                        <button id="btnEnviar" type="submit" class="btn btn-block btn-outline-success">
                                             <i class="mdi mdi-account-convert"></i> Registrar Administrador
                                         </button>
                                     </div>
@@ -119,6 +120,53 @@
 <script th:src="@{/angular/app/usuario-app.js}"></script>
 <script th:src="@{/angular/app/controllers/usuario-controller.js}"></script>
 <script>
+
+    $(document).ready(function () {
+
+        function getValidacionDni(dni) {
+            var options = {
+                type: "POST",
+                url: '/usuarios/validardni',
+                data: {dni: dni},
+                timeout: 600000
+            }
+            return $.ajax(options);
+        }
+
+        function getValidacionUsuario(usuario) {
+            var options = {
+                type: "POST",
+                url: '/usuarios/validarusuario',
+                data: {usuario: usuario},
+                timeout: 600000
+            }
+            return $.ajax(options);
+        }
+
+        $('#btnEnviar').click(function (e) {
+            e.preventDefault();
+            var usuario = $('#usuario').val();
+            var dni = $('#dni').val();
+            var validaDni = getValidacionDni(dni);
+            validaDni.done(function (result) {
+                console.log(result);
+                if(result == true){
+                    var validaUsuario = getValidacionUsuario(usuario);
+                    validaUsuario.done(function (valida) {
+                        if(valida == true){
+                            $('#formUsuario').submit();
+                        }else{
+                            alertify.alert("El ID Usuario ya esta en uso");
+                        }
+                    });
+                }else{
+                    alertify.alert("DNI ya registrado");
+                }
+            });
+        });
+    });
+
+
     // Basic
     $(".dropify").dropify();
 

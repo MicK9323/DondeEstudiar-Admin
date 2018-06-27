@@ -22,6 +22,10 @@ public interface IUsuarioDAO extends JpaRepository<Usuario, String> {
 	@Procedure
 	void sp_enabledUsuario(@Param("dni") String dni);
 
-	Usuario findByUsuario(String usuario);
+	@Query(nativeQuery = true, value = "execute sp_idUsuario :usuario")
+	int sp_idUsuario(@Param("usuario") String usuario);
+
+	@Query(nativeQuery = true, value = "execute sp_dniUsuario :dni")
+	int sp_dniUsuario(@Param("dni") String dni);
 	
 }

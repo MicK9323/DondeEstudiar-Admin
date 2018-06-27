@@ -5,7 +5,7 @@ import com.dondeestudiar.models.entities.Usuario;
 import java.util.List;
 
 public interface IUsuarioService {
-	
+
 	Usuario login(String usuario, String clave);
 
 	Usuario findByDni(String dni);
@@ -17,5 +17,9 @@ public interface IUsuarioService {
 	void mergeUsuario(Usuario user);
 
 	List<Usuario> listAll();
+
+	boolean validarUsuario(String usuario);
+
+	boolean validarDni(String dni);
 	
 }

@@ -12,22 +12,22 @@ import java.util.List;
 
 @Service
 public class UsuarioServiceImpl implements IUsuarioService {
-	
-	@Autowired
-	IUsuarioDAO usuarioDAO;
 
-	@Override
-	@Transactional(readOnly = true)
-	public Usuario login(String usuario, String clave) {
-		Usuario user = null;
-		try {
-			user = usuarioDAO.login(usuario, clave);
-		} catch (Exception e) {
-			user = null;
-			e.printStackTrace();
-		}
-		return user;
-	}
+    @Autowired
+    IUsuarioDAO usuarioDAO;
+
+    @Override
+    @Transactional(readOnly = true)
+    public Usuario login(String usuario, String clave) {
+        Usuario user = null;
+        try {
+            user = usuarioDAO.login(usuario, clave);
+        } catch (Exception e) {
+            user = null;
+            e.printStackTrace();
+        }
+        return user;
+    }
 
     @Override
     public Usuario findByDni(String dni) {
@@ -45,14 +45,30 @@ public class UsuarioServiceImpl implements IUsuarioService {
     }
 
     @Override
-	public void mergeUsuario(Usuario user) {
-		usuarioDAO.save(user);
-	}
+    public void mergeUsuario(Usuario user) {
+        usuarioDAO.save(user);
+    }
 
-	@Override
-	public List<Usuario> listAll() {
-		return usuarioDAO.findAll();
-	}
+    @Override
+    public List<Usuario> listAll() {
+        return usuarioDAO.findAll();
+    }
 
+    @Override
+    public boolean validarUsuario(String usuario) {
+        int flag = usuarioDAO.sp_idUsuario(usuario.trim());
+        if(flag == 1)
+            return true;
+        else
+            return false;
+    }
 
+    @Override
+    public boolean validarDni(String dni) {
+        int flag = usuarioDAO.sp_dniUsuario(dni.trim());
+        if(flag == 1)
+            return true;
+        else
+            return false;
+    }
 }
