@@ -15,13 +15,13 @@
     <div class="page-wrapper">
         <div class="container-fluid">
             <div th:replace="admin/layout/layout :: mensajes"></div>
-            <form th:object="${carrera}" th:action="@{/carreras/nuevo}" enctype="multipart/form-data" method="post">
+            <form id="formCarrera" th:object="${carrera}" th:action="@{/carreras/nuevo}" enctype="multipart/form-data" method="post">
                 <div class="row">
                     <div class="col-md-12">
                         <div class="card card-outline-inverse">
                             <div class="card-header">
                                 <div class="col-md-6 align-self-center">
-                                    <h4 class="text-white font-bold" th:text="${carrera.nombre}"></h4>
+                                    <h4 class="text-white font-bold" th:text="${titulo}"></h4>
                                 </div>
                             </div>
                             <div class="card-body">
@@ -31,7 +31,7 @@
                                             <div class="col-md-8">
                                                 <div class="form-group">
                                                     <label>Nombre</label>
-                                                    <input placeholder="Nombre de carrera" autocomplete="off"
+                                                    <input id="nomCarrera" placeholder="Nombre de carrera" autocomplete="off"
                                                            autofocus th:field="*{nombre}" type="text" letters-only
                                                            class="form-control" th:errorclass="border-danger"
                                                            data-ng-model="txtNombre.text" required
@@ -133,7 +133,7 @@
                                         <div class="card-body">
                                             <div class="row">
                                                 <div class="col-md-12 col-lg-6">
-                                                    <button type="submit" class="btn btn-block btn-outline-success">
+                                                    <button id="btnEnviar" type="submit" class="btn btn-block btn-outline-success">
                                                         <i class="fa fa-save"></i> Guardar
                                                     </button>
                                                 </div>
@@ -168,6 +168,37 @@
 <script th:src="@{/angular/app/carrera-app.js}"></script>
 <script th:src="@{/angular/app/controllers/carrera-controller.js}"></script>
 <script>
+    $(document).ready(function () {
+
+        function getValidacionNombre(nomCarrera) {
+            var options = {
+                type: "POST",
+                url: '/carreras/validarnombre',
+                data: {nomCarrera: nomCarrera},
+                timeout: 600000
+            }
+            return $.ajax(options);
+        }
+
+        $('#btnEnviar').click(function (e) {
+            e.preventDefault();
+            var nombre = $('#nomCarrera').val();
+            var promise = getValidacionNombre(nombre);
+            var form = $(this);
+            promise.done(function (result) {
+                console.log(result);
+                if(result == true){
+                    $('#formCarrera').submit();
+                }else{
+                    alertify.alert("Carrera ya registrada");
+                }
+            });
+        });
+
+
+    });
+
+
     // Basic
     $(".dropify").dropify();
 

@@ -32,5 +32,8 @@ public class Constantes {
     public final static String NO_FOUND_SEDES = "Aún no hay sedes registradas";
     public final static String FILE_SIZE = "El tamaño de la imagen no debe exceder a 1MB";
     public final static String PROLILE_UPDATED = "Vuelva a iniciar sesión para continuar";
+    public final static String DUPLICATED_CARRERA_NAME = "La carrera ya ha sido registrada";
+    public final static String DUPLICATED_DNI_USER= "El dni ya se encuentra registrado";
+    public final static String DUPLICATED_USER= "Usuario no disponible, ingrese uno distinto";
 
 }

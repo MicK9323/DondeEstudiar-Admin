@@ -74,6 +74,13 @@ public class CarrerasController {
         return "admin/regCarrera";
     }
 
+    @PostMapping(value = "/validarnombre")
+    @ResponseBody
+    public boolean ValidarAsignacion(@RequestParam String nomCarrera){
+        boolean valida = carreraService.sp_nombreCarrera(nomCarrera);
+        return valida;
+    }
+
     @PostMapping(value = "/nuevo")
     public String registrar(@Valid Carrera carrera, BindingResult result, SessionStatus status, Map<String, Object> model,
                             HttpServletRequest request, RedirectAttributes flash, MultipartFile file) {
@@ -88,7 +95,7 @@ public class CarrerasController {
             model.put("areas", areas);
             model.put("tipoCarrera", tipoCarrera);
             model.put("error", Constantes.INVALID_DATA);
-            model.put("titulo", "Editar Carrera");
+            model.put("titulo", "Registrar Carrera");
             return "admin/regCarrera";
         }
 
@@ -98,7 +105,7 @@ public class CarrerasController {
             List<Parametros> tipoCarrera = parametrosService.findByIdGrupo(Constantes.TIPO_CARRERA);
             model.put("areas", areas);
             model.put("tipoCarrera", tipoCarrera);
-            model.put("titulo", "Editar Carrera");
+            model.put("titulo", "Registrar Carrera");
             return "admin/regCarrera";
         }
 
@@ -117,7 +124,7 @@ public class CarrerasController {
                 List<Parametros> tipoCarrera = parametrosService.findByIdGrupo(Constantes.TIPO_CARRERA);
                 model.put("areas", areas);
                 model.put("tipoCarrera", tipoCarrera);
-                model.put("titulo", "Editar Carrera");
+                model.put("titulo", "Registrar Carrera");
                 return "admin/regCarrera";
             }
         }

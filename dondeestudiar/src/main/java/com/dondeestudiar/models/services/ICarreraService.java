@@ -23,4 +23,6 @@ public interface ICarreraService {
 
     void sp_enabledCarrera(String idCarrera);
 
+    boolean sp_nombreCarrera(String nomCarrera);
+
 }

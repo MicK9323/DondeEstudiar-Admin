@@ -58,4 +58,14 @@ public class CarreraServiceImpl implements ICarreraService {
     public void sp_enabledCarrera(String idCarrera) {
         carreraDAO.sp_enabledCarrera(idCarrera);
     }
+
+    @Override
+    public boolean sp_nombreCarrera(String nomCarrera) {
+        int flag = carreraDAO.sp_nombreCarrera(nomCarrera);
+        if(flag == 1)
+            return true;
+        else
+            return false;
+    }
+
 }

@@ -116,25 +116,6 @@ public class CarreraSedeController {
         return "/carreras/mostrar/"+institucion.getId();
     }
 
-    // Cargar lista de helpers
-/*    @PostMapping(value = "/cargar",
-            consumes = MediaType.APPLICATION_JSON_VALUE)
-    @ResponseBody
-    public List<HelperView> CargarLista(@RequestBody HelperView helper, HttpServletRequest request){
-        List<HelperView> helpers = null;
-        if(request.getSession().getAttribute("helpers") == null){
-            helpers = new ArrayList<HelperView>();
-            request.getSession().setAttribute("helpers",helpers);
-        }else{
-            helpers = (List<HelperView>) request.getSession().getAttribute("helpers");
-        }
-        try{
-            helpers.add(helper);
-            return helpers;
-        }catch(Exception e){
-            return null;
-        }
-    }*/
 
     // Autocompletar carreras
     @GetMapping(value = "/autocompletar/{term}")

@@ -26,4 +26,7 @@ public interface ICarreraDAO extends JpaRepository<Carrera, Integer> {
     @Procedure
     void sp_enabledCarrera(@Param("idCarrera") String idCarrera);
 
+    @Query(nativeQuery = true, value = "execute sp_nombreCarrera :nomCarrera")
+    int sp_nombreCarrera(@Param("nomCarrera") String nomCarrera);
+
 }
